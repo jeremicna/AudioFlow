@@ -16,7 +16,7 @@ class AudioProcessor {
 public:
     AudioProcessor(Amplifier amplifier, Equalizer equalizer);
 
-    vector<Float32> process(vector<Float32> in);
+    void process(vector<Float32>& in);
 
 private:
     Amplifier amplifier;

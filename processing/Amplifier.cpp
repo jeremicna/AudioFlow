@@ -6,14 +6,10 @@
 
 Amplifier::Amplifier(Float32 gain) : gain(gain) {}
 
-vector<Float32> Amplifier::amplify(vector<Float32> in) {
+void Amplifier::amplify(vector<Float32>& in) {
     Float32 scaleFactor = pow(10, gain / 20);
-    vector<Float32> out;
-    out.reserve(in.size());
 
     for (auto& sample : in) {
-        out.push_back(sample * scaleFactor);
+        sample *= scaleFactor;
     }
-
-    return out;
 }

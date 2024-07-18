@@ -15,7 +15,7 @@ class Equalizer {
 public:
     Equalizer(vector<Float32>& fVector, vector<Float32>& qVector, vector<Float32>& gainVector, Float32);
 
-    vector<Float32> process(vector<Float32> input);
+    void process(vector<Float32>& input);
 private:
     vector<IIRFilter> filters;
 

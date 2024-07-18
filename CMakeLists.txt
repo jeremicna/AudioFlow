@@ -8,14 +8,13 @@ find_library(CoreAudio CoreAudio)
 find_library(CoreFoundation CoreFoundation)
 find_library(AudioToolbox AudioToolbox)
 
-
 # Link against CoreAudio and CoreFoundation
 set(SOURCES
         main.cpp
-        Amplifier.cpp
-        AudioProcessor.cpp
-        IIRFilter.cpp
-        Equalizer.cpp
+        processing/Amplifier.cpp
+        processing/AudioProcessor.cpp
+        processing/IIRFilter.cpp
+        processing/Equalizer.cpp
         )
 
 add_executable(eq_cpp ${SOURCES})

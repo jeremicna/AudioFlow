@@ -6,9 +6,7 @@
 
 AudioProcessor::AudioProcessor(Amplifier amplifier, Equalizer equalizer) : amplifier(amplifier), equalizer(equalizer) {}
 
-vector<Float32> AudioProcessor::process(vector<Float32> in) {
-    vector<Float32> amplified = amplifier.amplify(in);
-    vector<Float32> filtered = equalizer.process(amplified);
-
-    return filtered;
+void AudioProcessor::process(vector<Float32>& in) {
+    amplifier.amplify(in);
+    equalizer.process(in);
 }

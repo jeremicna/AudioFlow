@@ -5,8 +5,8 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
-#include "AudioProcessor.h"
-#include "Equalizer.h"
+#include "processing/AudioProcessor.h"
+#include "processing/Equalizer.h"
 #define driver "HOLLY 2ch"
 
 using namespace std;
@@ -240,7 +240,7 @@ OSStatus defaultDeviceIOProc(
         Float32* outputData = (Float32*)outBuffer.mData;
         UInt32 numSamples = outBuffer.mDataByteSize / sizeof(Float32);
 
-        sharedBuffer = audioProcessor->process(sharedBuffer);
+        audioProcessor->process(sharedBuffer);
 
         for (int j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
             outputData[j] = sharedBuffer.front();

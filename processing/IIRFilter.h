@@ -14,7 +14,7 @@ class IIRFilter {
 public:
     IIRFilter(vector<Float32>& a, vector<Float32>& b);
 
-    vector<Float32> processBlock(vector<Float32> input);
+    void processBlock(vector<Float32>& input);
 private:
     vector<Float32> a_coeffs;
     vector<Float32> b_coeffs;

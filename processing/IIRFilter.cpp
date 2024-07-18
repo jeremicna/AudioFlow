@@ -15,9 +15,7 @@ IIRFilter::IIRFilter(vector<Float32> &a, vector<Float32> &b)
     }
 }
 
-vector<Float32> IIRFilter::processBlock(vector<Float32> input) {
-    vector<Float32> output(input.size(), 0.0);
-
+void IIRFilter::processBlock(vector<Float32>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
         // Calculate the new state (w_0[n])
         Float32 w0 = input[n];
@@ -30,7 +28,7 @@ vector<Float32> IIRFilter::processBlock(vector<Float32> input) {
         for (size_t k = 1; k < b_coeffs.size(); ++k) {
             yn += b_coeffs[k] * state[k - 1];
         }
-        output[n] = yn;
+        input[n] = yn;
 
         // Update the state variables (shift)
         for (size_t i = state.size() - 1; i > 0; --i) {
@@ -40,6 +38,4 @@ vector<Float32> IIRFilter::processBlock(vector<Float32> input) {
             state[0] = w0;
         }
     }
-
-    return output;
 }

@@ -19,12 +19,10 @@ Equalizer::Equalizer(vector<Float32> &fVector, vector<Float32> &qVector, vector<
     }
 }
 
-vector<Float32> Equalizer::process(vector<Float32> input) {
-    vector<Float32> output = input;
+void Equalizer::process(vector<Float32>& input) {
     for (auto& filter : filters) {
-        output = filter.processBlock(output);
+        filter.processBlock(input);
     }
-    return output;
 }
 
 void Equalizer::calculatePeakFilter(Float32 f, Float32 q, Float32 gain, Float32 sampleRate, vector<Float32>& a, vector<Float32>& b) {
