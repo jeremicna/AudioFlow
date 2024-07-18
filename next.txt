@@ -1,3 +1,0 @@
-3. Fix other structural issues, maj minuscule, private classes
-4. Fix comments, normalize pass bys, make nice comments
-5. Commit to github (without this file)
