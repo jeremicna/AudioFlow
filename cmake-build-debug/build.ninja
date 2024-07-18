@@ -55,6 +55,30 @@ build CMakeFiles/eq_cpp.dir/main.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremi
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
 
+build CMakeFiles/eq_cpp.dir/Amplifier.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/Amplifier.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/Amplifier.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
+
+build CMakeFiles/eq_cpp.dir/AudioProcessor.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/AudioProcessor.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/AudioProcessor.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
+
+build CMakeFiles/eq_cpp.dir/IIRFilter.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/IIRFilter.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/IIRFilter.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
+
+build CMakeFiles/eq_cpp.dir/Equalizer.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/Equalizer.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/Equalizer.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target eq_cpp
@@ -63,7 +87,7 @@ build CMakeFiles/eq_cpp.dir/main.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremi
 #############################################
 # Link the executable eq_cpp
 
-build eq_cpp: CXX_EXECUTABLE_LINKER__eq_cpp_Debug CMakeFiles/eq_cpp.dir/main.cpp.o
+build eq_cpp: CXX_EXECUTABLE_LINKER__eq_cpp_Debug CMakeFiles/eq_cpp.dir/main.cpp.o CMakeFiles/eq_cpp.dir/Amplifier.cpp.o CMakeFiles/eq_cpp.dir/AudioProcessor.cpp.o CMakeFiles/eq_cpp.dir/IIRFilter.cpp.o CMakeFiles/eq_cpp.dir/Equalizer.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4
   LINK_LIBRARIES = -Xlinker -framework -Xlinker CoreAudio  -Xlinker -framework -Xlinker CoreFoundation  -Xlinker -framework -Xlinker AudioToolbox
   OBJECT_DIR = CMakeFiles/eq_cpp.dir

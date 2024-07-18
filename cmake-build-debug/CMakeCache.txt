@@ -228,6 +228,9 @@ eq_cpp_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 eq_cpp_SOURCE_DIR:STATIC=/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp
 
+//Path to a library.
+processing.cpp:FILEPATH=processing.cpp-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

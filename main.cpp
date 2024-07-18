@@ -5,19 +5,23 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include "AudioProcessor.h"
+#include "Equalizer.h"
 #define driver "HOLLY 2ch"
 
 using namespace std;
 
 UInt32 driverID;
 UInt32 defaultDeviceID;
-
+vector<Float32> sharedBuffer;
+mutex bufferMutex;
+AudioProcessor* audioProcessor = nullptr;
 
 map<UInt32 , string> getAudioDevices() {
     AudioObjectPropertyAddress propAddress;
     propAddress.mSelector = kAudioHardwarePropertyDevices;
     propAddress.mScope = kAudioObjectPropertyScopeGlobal;
-    propAddress.mElement = kAudioObjectPropertyElementMaster;
+    propAddress.mElement = kAudioObjectPropertyElementMain;
 
     UInt32 propSize;
     OSStatus status = AudioObjectGetPropertyDataSize(
@@ -28,10 +32,8 @@ map<UInt32 , string> getAudioDevices() {
         return map<unsigned int, string>{};
     }
 
-    // Allocate memory to hold all device IDs
     AudioDeviceID* devices = new AudioDeviceID[propSize / sizeof(AudioDeviceID)];
 
-    // Get the list of all devices
     status = AudioObjectGetPropertyData(
             kAudioObjectSystemObject, &propAddress, 0, nullptr, &propSize, devices);
 
@@ -42,12 +44,11 @@ map<UInt32 , string> getAudioDevices() {
     }
 
     map<AudioDeviceID, string> m;
-    // Iterate through each device
     for (UInt32 i = 0; i < propSize / sizeof(AudioDeviceID); ++i) {
         CFStringRef cfName;
         propAddress.mSelector = kAudioDevicePropertyDeviceName;
         propAddress.mScope = kAudioObjectPropertyScopeGlobal;
-        propAddress.mElement = kAudioObjectPropertyElementMaster;
+        propAddress.mElement = kAudioObjectPropertyElementMain;
 
         UInt32 size = sizeof(CFStringRef);
         status = AudioObjectGetPropertyData(
@@ -64,7 +65,7 @@ map<UInt32 , string> getAudioDevices() {
 
         propAddress.mSelector = kAudioObjectPropertyName;
         propAddress.mScope = kAudioObjectPropertyScopeGlobal;
-        propAddress.mElement = kAudioObjectPropertyElementMaster;
+        propAddress.mElement = kAudioObjectPropertyElementMain;
 
         UInt32 dataSize = sizeof(CFStringRef);
 
@@ -97,10 +98,9 @@ UInt32 getDefaultOutputDevice() {
     AudioObjectPropertyAddress propertyAddress;
     AudioObjectID deviceID;
 
-    // Get default output device ID
     propertyAddress.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
     propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
-    propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+    propertyAddress.mElement = kAudioObjectPropertyElementMain;
 
     UInt32 dataSize = sizeof(deviceID);
     status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, nullptr, &dataSize, &deviceID);
@@ -116,10 +116,9 @@ bool setDefaultOutputDevice(UInt32 deviceID) {
     OSStatus status;
     AudioObjectPropertyAddress propertyAddress;
 
-    // Set default output device ID
     propertyAddress.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
     propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
-    propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+    propertyAddress.mElement = kAudioObjectPropertyElementMain;
 
     UInt32 dataSize = sizeof(deviceID);
     status = AudioObjectSetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, nullptr, dataSize, &deviceID);
@@ -131,15 +130,30 @@ bool setDefaultOutputDevice(UInt32 deviceID) {
     return true;
 }
 
+bool setAudioDeviceBufferSize(AudioDeviceID deviceID, UInt32 bufferSizeInFrames) {
+    OSStatus status;
+    AudioObjectPropertyAddress propertyAddress;
+    propertyAddress.mSelector = kAudioDevicePropertyBufferFrameSize;
+    propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
+    propertyAddress.mElement = kAudioObjectPropertyElementMain;
+
+    status = AudioObjectSetPropertyData(deviceID, &propertyAddress, 0, nullptr, sizeof(UInt32), &bufferSizeInFrames);
+    if (status != noErr) {
+        std::cerr << "Error setting buffer size: " << status << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 Float32 getAudioDeviceVolume(UInt32 deviceID) {
     OSStatus status;
     Float32 volume;
 
-    // Get volume
     AudioObjectPropertyAddress volumeAddress;
     volumeAddress.mSelector = kAudioDevicePropertyVolumeScalar;
     volumeAddress.mScope = kAudioDevicePropertyScopeOutput;
-    volumeAddress.mElement = kAudioObjectPropertyElementMaster;
+    volumeAddress.mElement = kAudioObjectPropertyElementMain;
 
     UInt32 dataSize = sizeof(Float32);
     status = AudioObjectGetPropertyData(deviceID, &volumeAddress, 0, nullptr, &dataSize, &volume);
@@ -157,7 +171,7 @@ bool setAudioDeviceVolume(UInt32 deviceID, Float32 volume) {
     AudioObjectPropertyAddress volumeAddress;
     volumeAddress.mSelector = kAudioDevicePropertyVolumeScalar;
     volumeAddress.mScope = kAudioDevicePropertyScopeOutput;
-    volumeAddress.mElement = kAudioObjectPropertyElementMaster;
+    volumeAddress.mElement = kAudioObjectPropertyElementMain;
 
     status = AudioObjectSetPropertyData(deviceID, &volumeAddress, 0, nullptr, sizeof(Float32), &volume);
     if (status != noErr) {
@@ -169,7 +183,7 @@ bool setAudioDeviceVolume(UInt32 deviceID, Float32 volume) {
     AudioObjectPropertyAddress muteAddress;
     muteAddress.mSelector = kAudioDevicePropertyMute;
     muteAddress.mScope = kAudioDevicePropertyScopeOutput;
-    muteAddress.mElement = kAudioObjectPropertyElementMaster;
+    muteAddress.mElement = kAudioObjectPropertyElementMain;
 
     status = AudioObjectSetPropertyData(deviceID, &muteAddress, 0, nullptr, sizeof(UInt32), &mute);
     if (status != noErr) {
@@ -187,17 +201,6 @@ void cleanup() {
     setDefaultOutputDevice(defaultDeviceID);
 }
 
-std::vector<Float32> sharedBuffer;
-std::mutex bufferMutex;
-
-AudioBuffer processAudio(AudioBuffer in) {
-    // Preamp
-    // Filters / Parametric eq design
-    // Reverb
-
-    return in;
-}
-
 OSStatus driverIOProc(
         AudioObjectID inDevice,
         const AudioTimeStamp* inNow,
@@ -208,13 +211,12 @@ OSStatus driverIOProc(
         void* inClientData
 ) {
     bufferMutex.lock();
-    for (UInt32 i = 0; i < inInputData->mNumberBuffers; ++i) {
+    for (int i = 0; i < inInputData->mNumberBuffers; ++i) {
         AudioBuffer buffer = inInputData->mBuffers[i];
-        AudioBuffer processed = processAudio(buffer);
-        Float32* audioData = (Float32*)processed.mData;
-        UInt32 numSamples = processed.mDataByteSize / sizeof(Float32);
+        Float32* audioData = (Float32*)buffer.mData;
+        UInt32 numSamples = buffer.mDataByteSize / sizeof(Float32);
 
-        for (UInt32 j = 0; j < numSamples; ++j) {
+        for (int j = 0; j < numSamples; ++j) {
             sharedBuffer.push_back(audioData[j]);
         }
     }
@@ -238,10 +240,11 @@ OSStatus defaultDeviceIOProc(
         Float32* outputData = (Float32*)outBuffer.mData;
         UInt32 numSamples = outBuffer.mDataByteSize / sizeof(Float32);
 
-        // Assume outputData is large enough to hold all samples
-        for (UInt32 j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
+        sharedBuffer = audioProcessor->process(sharedBuffer);
+
+        for (int j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
             outputData[j] = sharedBuffer.front();
-            sharedBuffer.erase(sharedBuffer.begin()); // Remove the sample after using
+            sharedBuffer.erase(sharedBuffer.begin());
         }
     }
     bufferMutex.unlock();
@@ -250,6 +253,12 @@ OSStatus defaultDeviceIOProc(
 }
 
 int main() {
+    vector<Float32> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
+    vector<Float32> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
+    vector<Float32> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
+
+    audioProcessor = new AudioProcessor(Amplifier(-15), Equalizer(f, q, g, 48000));
+
     // Get device IDs
     map<UInt32, string> ad = getAudioDevices();
     for (auto const& [key, val] : ad) {
@@ -265,7 +274,16 @@ int main() {
     setDefaultOutputDevice(driverID);
     setAudioDeviceVolume(defaultDeviceID, 1);
 
-    //
+    // Set buffer size
+    UInt32 bufferSizeInFrames = 4096; // Choose your desired buffer size
+    if (!setAudioDeviceBufferSize(driverID, bufferSizeInFrames)) {
+        std::cerr << "Failed to set buffer size for driver device." << std::endl;
+    }
+    if (!setAudioDeviceBufferSize(defaultDeviceID, bufferSizeInFrames)) {
+        std::cerr << "Failed to set buffer size for default output device." << std::endl;
+    }
+
+    // Create audio device processes
     AudioDeviceIOProcID inputIOProcId;
     AudioDeviceIOProcID outputIOProcID;
 
@@ -284,7 +302,6 @@ int main() {
 
     AudioDeviceDestroyIOProcID(driverID, inputIOProcId);
     AudioDeviceDestroyIOProcID(defaultDeviceID, outputIOProcID);
-    //
 
     // Return to default output device and original volume
     ::atexit(cleanup);

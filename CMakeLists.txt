@@ -8,8 +8,16 @@ find_library(CoreAudio CoreAudio)
 find_library(CoreFoundation CoreFoundation)
 find_library(AudioToolbox AudioToolbox)
 
-# Link against CoreAudio and CoreFoundation
 
-add_executable(eq_cpp main.cpp)
+# Link against CoreAudio and CoreFoundation
+set(SOURCES
+        main.cpp
+        Amplifier.cpp
+        AudioProcessor.cpp
+        IIRFilter.cpp
+        Equalizer.cpp
+        )
+
+add_executable(eq_cpp ${SOURCES})
 
 target_link_libraries(eq_cpp ${CoreAudio} ${CoreFoundation} ${AudioToolbox})
