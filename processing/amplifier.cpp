@@ -2,11 +2,11 @@
 // Created by Jeremi Campagna on 2024-07-16.
 //
 
-#include "Amplifier.h"
+#include "amplifier.h"
 
 Amplifier::Amplifier(Float32 gain) : gain(gain) {}
 
-void Amplifier::amplify(vector<Float32>& in) {
+void Amplifier::process(vector<Float32>& in) {
     Float32 scaleFactor = pow(10, gain / 20);
 
     for (auto& sample : in) {

@@ -2,7 +2,7 @@
 // Created by Jeremi Campagna on 2024-07-17.
 //
 
-#include "Equalizer.h"
+#include "equalizer.h"
 
 Equalizer::Equalizer(vector<Float32> &fVector, vector<Float32> &qVector, vector<Float32> &gainVector, Float32 sampleRate) {
     if (fVector.size() != qVector.size() || fVector.size() != gainVector.size()) {

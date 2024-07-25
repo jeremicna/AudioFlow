@@ -2,7 +2,7 @@
 // Created by Jeremi Campagna on 2024-07-17.
 //
 
-#include "IIRFilter.h"
+#include "iirFilter.h"
 #include <vector>
 #include <stdexcept>
 

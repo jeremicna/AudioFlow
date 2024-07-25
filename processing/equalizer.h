@@ -7,7 +7,7 @@
 
 #include <CoreAudio/CoreAudio.h>
 #include <map>
-#include "IIRFilter.h"
+#include "iirFilter.h"
 
 using namespace std;
 

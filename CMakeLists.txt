@@ -7,16 +7,19 @@ set(CMAKE_CXX_STANDARD 17)
 find_library(CoreAudio CoreAudio)
 find_library(CoreFoundation CoreFoundation)
 find_library(AudioToolbox AudioToolbox)
+find_library(Accelerate Accelerate)
 
 # Link against CoreAudio and CoreFoundation
 set(SOURCES
         main.cpp
-        processing/Amplifier.cpp
-        processing/AudioProcessor.cpp
-        processing/IIRFilter.cpp
-        processing/Equalizer.cpp
+        processing/amplifier.cpp
+        processing/audioProcessor.cpp
+        processing/iirFilter.cpp
+        processing/equalizer.cpp
+        processing/convolutionReverb.cpp
+        fileutils/readIRFile.cpp
         )
 
 add_executable(eq_cpp ${SOURCES})
 
-target_link_libraries(eq_cpp ${CoreAudio} ${CoreFoundation} ${AudioToolbox})
+target_link_libraries(eq_cpp ${CoreAudio} ${CoreFoundation} ${AudioToolbox} ${Accelerate})

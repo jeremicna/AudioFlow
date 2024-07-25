@@ -15,6 +15,9 @@
 ########################
 
 //Path to a library.
+Accelerate:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Accelerate.framework
+
+//Path to a library.
 AudioToolbox:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AudioToolbox.framework
 
 //Path to a program.

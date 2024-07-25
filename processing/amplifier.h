@@ -14,7 +14,7 @@ class Amplifier {
 public:
     Amplifier(Float32 gain);
 
-    void amplify(vector<Float32>& in);
+    void process(vector<Float32>& in);
 private:
     Float32 gain;
 };

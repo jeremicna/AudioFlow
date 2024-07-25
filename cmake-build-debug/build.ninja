@@ -55,29 +55,41 @@ build CMakeFiles/eq_cpp.dir/main.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremi
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir
 
-build CMakeFiles/eq_cpp.dir/processing/Amplifier.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/Amplifier.cpp || cmake_object_order_depends_target_eq_cpp
-  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/Amplifier.cpp.o.d
+build CMakeFiles/eq_cpp.dir/processing/amplifier.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/amplifier.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/amplifier.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/processing
 
-build CMakeFiles/eq_cpp.dir/processing/AudioProcessor.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/AudioProcessor.cpp || cmake_object_order_depends_target_eq_cpp
-  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/AudioProcessor.cpp.o.d
+build CMakeFiles/eq_cpp.dir/processing/audioProcessor.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/audioProcessor.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/audioProcessor.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/processing
 
-build CMakeFiles/eq_cpp.dir/processing/IIRFilter.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/IIRFilter.cpp || cmake_object_order_depends_target_eq_cpp
-  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/IIRFilter.cpp.o.d
+build CMakeFiles/eq_cpp.dir/processing/iirFilter.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/iirFilter.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/iirFilter.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/processing
 
-build CMakeFiles/eq_cpp.dir/processing/Equalizer.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/Equalizer.cpp || cmake_object_order_depends_target_eq_cpp
-  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/Equalizer.cpp.o.d
+build CMakeFiles/eq_cpp.dir/processing/equalizer.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/equalizer.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/equalizer.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/processing
+
+build CMakeFiles/eq_cpp.dir/processing/convolutionReverb.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/processing/convolutionReverb.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/processing/convolutionReverb.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/processing
+
+build CMakeFiles/eq_cpp.dir/fileutils/readIRFile.cpp.o: CXX_COMPILER__eq_cpp_Debug /Users/jeremicampagna/Desktop/internship$ grind/projects/eq-cpp/fileutils/readIRFile.cpp || cmake_object_order_depends_target_eq_cpp
+  DEP_FILE = CMakeFiles/eq_cpp.dir/fileutils/readIRFile.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4 -fcolor-diagnostics -std=gnu++17
+  OBJECT_DIR = CMakeFiles/eq_cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/eq_cpp.dir/fileutils
 
 
 # =============================================================================
@@ -87,9 +99,9 @@ build CMakeFiles/eq_cpp.dir/processing/Equalizer.cpp.o: CXX_COMPILER__eq_cpp_Deb
 #############################################
 # Link the executable eq_cpp
 
-build eq_cpp: CXX_EXECUTABLE_LINKER__eq_cpp_Debug CMakeFiles/eq_cpp.dir/main.cpp.o CMakeFiles/eq_cpp.dir/processing/Amplifier.cpp.o CMakeFiles/eq_cpp.dir/processing/AudioProcessor.cpp.o CMakeFiles/eq_cpp.dir/processing/IIRFilter.cpp.o CMakeFiles/eq_cpp.dir/processing/Equalizer.cpp.o
+build eq_cpp: CXX_EXECUTABLE_LINKER__eq_cpp_Debug CMakeFiles/eq_cpp.dir/main.cpp.o CMakeFiles/eq_cpp.dir/processing/amplifier.cpp.o CMakeFiles/eq_cpp.dir/processing/audioProcessor.cpp.o CMakeFiles/eq_cpp.dir/processing/iirFilter.cpp.o CMakeFiles/eq_cpp.dir/processing/equalizer.cpp.o CMakeFiles/eq_cpp.dir/processing/convolutionReverb.cpp.o CMakeFiles/eq_cpp.dir/fileutils/readIRFile.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.4
-  LINK_LIBRARIES = -Xlinker -framework -Xlinker CoreAudio  -Xlinker -framework -Xlinker CoreFoundation  -Xlinker -framework -Xlinker AudioToolbox
+  LINK_LIBRARIES = -Xlinker -framework -Xlinker CoreAudio  -Xlinker -framework -Xlinker CoreFoundation  -Xlinker -framework -Xlinker AudioToolbox  -Xlinker -framework -Xlinker Accelerate
   OBJECT_DIR = CMakeFiles/eq_cpp.dir
   POST_BUILD = :
   PRE_LINK = :

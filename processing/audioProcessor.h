@@ -7,8 +7,8 @@
 
 #include <CoreAudio/CoreAudio.h>
 #include <map>
-#include "Amplifier.h"
-#include "Equalizer.h"
+#include "amplifier.h"
+#include "equalizer.h"
 
 using namespace std;
 
@@ -16,8 +16,7 @@ class AudioProcessor {
 public:
     AudioProcessor(Amplifier amplifier, Equalizer equalizer);
 
-    void process(vector<Float32>& in);
-
+    void process(vector<Float32>& input);
 private:
     Amplifier amplifier;
     Equalizer equalizer;

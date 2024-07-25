@@ -5,8 +5,10 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
-#include "processing/AudioProcessor.h"
-#include "processing/Equalizer.h"
+#include "processing/audioProcessor.h"
+#include "processing/equalizer.h"
+#include "fileutils/readIRFile.h"
+#include "processing/convolutionReverb.h"
 #define driver "HOLLY 2ch"
 
 using namespace std;
@@ -253,6 +255,12 @@ OSStatus defaultDeviceIOProc(
 }
 
 int main() {
+    vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
+    ConvolutionReverb cr = ConvolutionReverb(ir);
+
+    cr.process({4,4,4,4,6,6,6,6,8,8,8,8,10,10,10,10});
+    exit(1);
+
     vector<Float32> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
     vector<Float32> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
     vector<Float32> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
