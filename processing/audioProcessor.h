@@ -9,17 +9,19 @@
 #include <map>
 #include "amplifier.h"
 #include "equalizer.h"
+#include "convolutionReverb.h"
 
 using namespace std;
 
 class AudioProcessor {
 public:
-    AudioProcessor(Amplifier amplifier, Equalizer equalizer);
+    AudioProcessor(Amplifier amplifier, Equalizer equalizer, ConvolutionReverb convolutionReverb);
 
     void process(vector<Float32>& input);
 private:
     Amplifier amplifier;
     Equalizer equalizer;
+    ConvolutionReverb convolutionReverb;
 };
 
 

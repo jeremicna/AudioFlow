@@ -255,17 +255,13 @@ OSStatus defaultDeviceIOProc(
 }
 
 int main() {
-    vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
-    ConvolutionReverb cr = ConvolutionReverb(ir);
-
-    cr.process({4,4,4,4,6,6,6,6,8,8,8,8,10,10,10,10});
-    exit(1);
-
     vector<Float32> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
     vector<Float32> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
     vector<Float32> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
 
-    audioProcessor = new AudioProcessor(Amplifier(-15), Equalizer(f, q, g, 48000));
+    vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
+
+    audioProcessor = new AudioProcessor(Amplifier(-15), Equalizer(f, q, g, 48000), ConvolutionReverb(ir));
 
     // Get device IDs
     map<UInt32, string> ad = getAudioDevices();
