@@ -9,18 +9,15 @@
 #include <vector>
 #include <stdexcept>
 
-
-using namespace std;
-
 class IIRFilter {
 public:
-    IIRFilter(vector<float>& a, vector<float>& b);
+    IIRFilter(std::vector<float>& a, std::vector<float>& b);
 
-    void processBlock(vector<float>& input);
+    void processBlock(std::vector<float>& input);
 private:
-    vector<float> a_coeffs;
-    vector<float> b_coeffs;
-    vector<float> state;
+    std::vector<float> a_coeffs;
+    std::vector<float> b_coeffs;
+    std::vector<float> state;
 };
 
 

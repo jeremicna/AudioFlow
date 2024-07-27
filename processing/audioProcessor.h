@@ -10,13 +10,11 @@
 #include "equalizer.h"
 #include "convolutionReverb.h"
 
-using namespace std;
-
 class AudioProcessor {
 public:
     AudioProcessor(Amplifier amplifier, Equalizer equalizer, ConvolutionReverb convolutionReverb);
 
-    void process(vector<float>& input);
+    void process(std::vector<float>& input);
 private:
     Amplifier amplifier;
     Equalizer equalizer;

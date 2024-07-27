@@ -5,15 +5,15 @@
 #include "iirFilter.h"
 
 
-IIRFilter::IIRFilter(vector<float> &a, vector<float> &b)
-    : a_coeffs(a), b_coeffs(b), state(vector<float>(a.size(), 0.0)) {
+IIRFilter::IIRFilter(std::vector<float> &a, std::vector<float> &b)
+    : a_coeffs(a), b_coeffs(b), state(std::vector<float>(a.size(), 0.0)) {
 
     if (a_coeffs[0] != 1.0) {
         throw std::invalid_argument("The first coefficient of a must be 1.");
     }
 }
 
-void IIRFilter::processBlock(vector<float>& input) {
+void IIRFilter::processBlock(std::vector<float>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
         float w0 = input[n];
         for (size_t k = 1; k < a_coeffs.size(); ++k) {

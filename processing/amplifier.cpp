@@ -6,7 +6,7 @@
 
 Amplifier::Amplifier(float gain) : gain(gain) {}
 
-void Amplifier::process(vector<float>& in) {
+void Amplifier::process(std::vector<float> &in) {
     float scaleFactor = pow(10, gain / 20);
 
     for (auto& sample : in) {

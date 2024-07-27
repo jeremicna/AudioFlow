@@ -4,14 +4,14 @@
 
 #include "equalizer.h"
 
-Equalizer::Equalizer(vector<float> &fVector, vector<float> &qVector, vector<float> &gainVector, float sampleRate) {
+Equalizer::Equalizer(std::vector<float> &fVector, std::vector<float> &qVector, std::vector<float> &gainVector, float sampleRate) {
     if (fVector.size() != qVector.size() || fVector.size() != gainVector.size()) {
         throw std::invalid_argument("Equalizer vectors must be of the same size.");
     }
 
     for (int i = 0; i < fVector.size(); i++) {
-        vector<float> a;
-        vector<float> b;
+        std::vector<float> a;
+        std::vector<float> b;
 
         calculatePeakFilter(fVector[i], qVector[i], gainVector[i], sampleRate, a, b);
 
@@ -19,13 +19,13 @@ Equalizer::Equalizer(vector<float> &fVector, vector<float> &qVector, vector<floa
     }
 }
 
-void Equalizer::process(vector<float>& input) {
+void Equalizer::process(std::vector<float>& input) {
     for (auto& filter : filters) {
         filter.processBlock(input);
     }
 }
 
-void Equalizer::calculatePeakFilter(float f, float q, float gain, float sampleRate, vector<float>& a, vector<float>& b) {
+void Equalizer::calculatePeakFilter(float f, float q, float gain, float sampleRate, std::vector<float>& a, std::vector<float>& b) {
     float A = pow(10, gain / 40.0f);
     float omega = 2.0f * M_PI * f / sampleRate;
     float alpha = sin(omega) / (2.0f * q);

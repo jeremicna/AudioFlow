@@ -7,13 +7,11 @@
 
 #include <map>
 
-using namespace std;
-
 class Amplifier {
 public:
     Amplifier(float gain);
 
-    void process(vector<float>& in);
+    void process(std::vector<float>& in);
 private:
     float gain;
 };

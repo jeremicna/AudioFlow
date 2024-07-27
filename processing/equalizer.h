@@ -8,17 +8,15 @@
 #include <map>
 #include "iirFilter.h"
 
-using namespace std;
-
 class Equalizer {
 public:
-    Equalizer(vector<float>& fVector, vector<float>& qVector, vector<float>& gainVector, float);
+    Equalizer(std::vector<float>& fVector, std::vector<float>& qVector, std::vector<float>& gainVector, float);
 
-    void process(vector<float>& input);
+    void process(std::vector<float>& input);
 private:
-    vector<IIRFilter> filters;
+    std::vector<IIRFilter> filters;
 
-    void calculatePeakFilter(float f, float Q, float gain, float sampleRate, vector<float>& a, vector<float>& b);
+    void calculatePeakFilter(float f, float Q, float gain, float sampleRate, std::vector<float>& a, std::vector<float>& b);
 };
 
 

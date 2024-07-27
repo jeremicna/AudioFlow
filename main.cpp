@@ -1,5 +1,5 @@
-#include <CoreAudio/CoreAudio.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <CoreAudio/CoreAudio.h>
 #include <iostream>
 #include <map>
 #include "processing/audioProcessor.h"
@@ -8,15 +8,15 @@
 #include "processing/convolutionReverb.h"
 #define driver "HOLLY 2ch"
 
-using namespace std;
 
 UInt32 driverID;
 UInt32 defaultDeviceID;
-vector<float> sharedBuffer;
-mutex bufferMutex;
+std::vector<float> sharedBuffer;
+std::mutex bufferMutex;
 AudioProcessor* audioProcessor = nullptr;
 
-map<UInt32 , string> getAudioDevices() {
+
+std::map<UInt32 , std::string> getAudioDevices() {
     AudioObjectPropertyAddress propAddress;
     propAddress.mSelector = kAudioHardwarePropertyDevices;
     propAddress.mScope = kAudioObjectPropertyScopeGlobal;
@@ -28,7 +28,7 @@ map<UInt32 , string> getAudioDevices() {
 
     if (status != noErr) {
         std::cerr << "Error getting device list size." << std::endl;
-        return map<unsigned int, string>{};
+        return std::map<unsigned int, std::string>{};
     }
 
     AudioDeviceID* devices = new AudioDeviceID[propSize / sizeof(AudioDeviceID)];
@@ -39,10 +39,10 @@ map<UInt32 , string> getAudioDevices() {
     if (status != noErr) {
         std::cerr << "Error getting device list." << std::endl;
         delete[] devices;
-        return map<unsigned int, string>{};
+        return std::map<unsigned int, std::string>{};
     }
 
-    map<AudioDeviceID, string> m;
+    std::map<AudioDeviceID, std::string> m;
     for (UInt32 i = 0; i < propSize / sizeof(AudioDeviceID); ++i) {
         CFStringRef cfName;
         propAddress.mSelector = kAudioDevicePropertyDeviceName;
@@ -56,7 +56,7 @@ map<UInt32 , string> getAudioDevices() {
         if (status != noErr) {
             std::cerr << "Error getting device list." << std::endl;
             delete[] devices;
-            return map<unsigned int, string>{};
+            return std::map<unsigned int, std::string>{};
         }
 
         AudioDeviceID deviceId = devices[i];
@@ -79,7 +79,7 @@ map<UInt32 , string> getAudioDevices() {
 
         if (status != noErr) {
             std::cerr << "Error getting device name: " << status << std::endl;
-            return map<unsigned int, string>{};
+            return std::map<unsigned int, std::string>{};
         }
 
         CFStringGetCString(cfName, deviceName, sizeof(deviceName), kCFStringEncodingUTF8);
@@ -251,17 +251,18 @@ OSStatus defaultDeviceIOProc(
     return noErr;
 }
 
+// Separate main for win and mac
 int main() {
-    vector<float> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
-    vector<float> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
-    vector<float> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
+    std::vector<float> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
+    std::vector<float> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
+    std::vector<float> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
 
-    vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
+    std::vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
 
     audioProcessor = new AudioProcessor(Amplifier(-15), Equalizer(f, q, g, 48000), ConvolutionReverb(ir));
 
     // Get device IDs
-    map<UInt32, string> ad = getAudioDevices();
+    std::map<UInt32, std::string> ad = getAudioDevices();
     for (auto const& [key, val] : ad) {
         if (val == driver) {
             driverID = key;
