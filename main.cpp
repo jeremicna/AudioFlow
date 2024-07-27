@@ -2,9 +2,6 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <iostream>
 #include <map>
-#include <string>
-#include <cmath>
-#include <cstdlib>
 #include "processing/audioProcessor.h"
 #include "processing/equalizer.h"
 #include "fileutils/readIRFile.h"
@@ -15,7 +12,7 @@ using namespace std;
 
 UInt32 driverID;
 UInt32 defaultDeviceID;
-vector<Float32> sharedBuffer;
+vector<float> sharedBuffer;
 mutex bufferMutex;
 AudioProcessor* audioProcessor = nullptr;
 
@@ -148,16 +145,16 @@ bool setAudioDeviceBufferSize(AudioDeviceID deviceID, UInt32 bufferSizeInFrames)
     return true;
 }
 
-Float32 getAudioDeviceVolume(UInt32 deviceID) {
+float getAudioDeviceVolume(UInt32 deviceID) {
     OSStatus status;
-    Float32 volume;
+    float volume;
 
     AudioObjectPropertyAddress volumeAddress;
     volumeAddress.mSelector = kAudioDevicePropertyVolumeScalar;
     volumeAddress.mScope = kAudioDevicePropertyScopeOutput;
     volumeAddress.mElement = kAudioObjectPropertyElementMain;
 
-    UInt32 dataSize = sizeof(Float32);
+    UInt32 dataSize = sizeof(float);
     status = AudioObjectGetPropertyData(deviceID, &volumeAddress, 0, nullptr, &dataSize, &volume);
     if (status != noErr) {
         std::cerr << "Error getting volume." << std::endl;
@@ -167,7 +164,7 @@ Float32 getAudioDeviceVolume(UInt32 deviceID) {
     return volume;
 }
 
-bool setAudioDeviceVolume(UInt32 deviceID, Float32 volume) {
+bool setAudioDeviceVolume(UInt32 deviceID, float volume) {
     OSStatus status;
 
     AudioObjectPropertyAddress volumeAddress;
@@ -175,7 +172,7 @@ bool setAudioDeviceVolume(UInt32 deviceID, Float32 volume) {
     volumeAddress.mScope = kAudioDevicePropertyScopeOutput;
     volumeAddress.mElement = kAudioObjectPropertyElementMain;
 
-    status = AudioObjectSetPropertyData(deviceID, &volumeAddress, 0, nullptr, sizeof(Float32), &volume);
+    status = AudioObjectSetPropertyData(deviceID, &volumeAddress, 0, nullptr, sizeof(float), &volume);
     if (status != noErr) {
         std::cerr << "Error setting property data." << std::endl;
         return false;
@@ -198,7 +195,7 @@ bool setAudioDeviceVolume(UInt32 deviceID, Float32 volume) {
 
 
 void cleanup() {
-    Float32 driverVolume = getAudioDeviceVolume(driverID);
+    float driverVolume = getAudioDeviceVolume(driverID);
     setAudioDeviceVolume(defaultDeviceID, driverVolume);
     setDefaultOutputDevice(defaultDeviceID);
 }
@@ -215,8 +212,8 @@ OSStatus driverIOProc(
     bufferMutex.lock();
     for (int i = 0; i < inInputData->mNumberBuffers; ++i) {
         AudioBuffer buffer = inInputData->mBuffers[i];
-        Float32* audioData = (Float32*)buffer.mData;
-        UInt32 numSamples = buffer.mDataByteSize / sizeof(Float32);
+        float* audioData = (float*)buffer.mData;
+        UInt32 numSamples = buffer.mDataByteSize / sizeof(float);
 
         for (int j = 0; j < numSamples; ++j) {
             sharedBuffer.push_back(audioData[j]);
@@ -239,8 +236,8 @@ OSStatus defaultDeviceIOProc(
     bufferMutex.lock();
     for (UInt32 i = 0; i < outOutputData->mNumberBuffers; ++i) {
         AudioBuffer outBuffer = outOutputData->mBuffers[i];
-        Float32* outputData = (Float32*)outBuffer.mData;
-        UInt32 numSamples = outBuffer.mDataByteSize / sizeof(Float32);
+        float* outputData = (float*)outBuffer.mData;
+        UInt32 numSamples = outBuffer.mDataByteSize / sizeof(float);
 
         audioProcessor->process(sharedBuffer);
 
@@ -255,9 +252,9 @@ OSStatus defaultDeviceIOProc(
 }
 
 int main() {
-    vector<Float32> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
-    vector<Float32> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
-    vector<Float32> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
+    vector<float> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
+    vector<float> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
+    vector<float> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
 
     vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
 
@@ -273,7 +270,7 @@ int main() {
     defaultDeviceID = getDefaultOutputDevice();
 
     // Volume and device swaps
-    Float32 defaultDeviceVolume = getAudioDeviceVolume(defaultDeviceID);
+    float defaultDeviceVolume = getAudioDeviceVolume(defaultDeviceID);
     setAudioDeviceVolume(driverID, defaultDeviceVolume);
     setDefaultOutputDevice(driverID);
     setAudioDeviceVolume(defaultDeviceID, 1);

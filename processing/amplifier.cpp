@@ -4,10 +4,10 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(Float32 gain) : gain(gain) {}
+Amplifier::Amplifier(float gain) : gain(gain) {}
 
-void Amplifier::process(vector<Float32>& in) {
-    Float32 scaleFactor = pow(10, gain / 20);
+void Amplifier::process(vector<float>& in) {
+    float scaleFactor = pow(10, gain / 20);
 
     for (auto& sample : in) {
         sample *= scaleFactor;

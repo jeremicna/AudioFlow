@@ -5,7 +5,6 @@
 #ifndef EQ_CPP_AUDIOPROCESSOR_H
 #define EQ_CPP_AUDIOPROCESSOR_H
 
-#include <CoreAudio/CoreAudio.h>
 #include <map>
 #include "amplifier.h"
 #include "equalizer.h"
@@ -17,7 +16,7 @@ class AudioProcessor {
 public:
     AudioProcessor(Amplifier amplifier, Equalizer equalizer, ConvolutionReverb convolutionReverb);
 
-    void process(vector<Float32>& input);
+    void process(vector<float>& input);
 private:
     Amplifier amplifier;
     Equalizer equalizer;

@@ -6,19 +6,21 @@
 #define EQ_CPP_IIRFILTER_H
 
 #include <map>
-#include <CoreAudio/CoreAudio.h>
+#include <vector>
+#include <stdexcept>
+
 
 using namespace std;
 
 class IIRFilter {
 public:
-    IIRFilter(vector<Float32>& a, vector<Float32>& b);
+    IIRFilter(vector<float>& a, vector<float>& b);
 
-    void processBlock(vector<Float32>& input);
+    void processBlock(vector<float>& input);
 private:
-    vector<Float32> a_coeffs;
-    vector<Float32> b_coeffs;
-    vector<Float32> state;
+    vector<float> a_coeffs;
+    vector<float> b_coeffs;
+    vector<float> state;
 };
 
 

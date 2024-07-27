@@ -6,17 +6,16 @@
 #define EQ_CPP_AMPLIFIER_H
 
 #include <map>
-#include <CoreAudio/CoreAudio.h>
 
 using namespace std;
 
 class Amplifier {
 public:
-    Amplifier(Float32 gain);
+    Amplifier(float gain);
 
-    void process(vector<Float32>& in);
+    void process(vector<float>& in);
 private:
-    Float32 gain;
+    float gain;
 };
 
 

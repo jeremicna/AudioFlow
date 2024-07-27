@@ -6,9 +6,7 @@
 #define EQ_CPP_CONVOLUTIONREVERB_H
 
 #include <map>
-#include <CoreAudio/CoreAudio.h>
 #include <Accelerate/Accelerate.h>
-#include <iostream>
 
 class ConvolutionReverb {
 public:
