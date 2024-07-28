@@ -255,7 +255,7 @@ OSStatus defaultDeviceIOProc(
 int main() {
     std::vector<float> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
     std::vector<float> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
-    std::vector<float> g = {15, 10, 7, 4, 2, 0, 0, 0, 0, 0};
+    std::vector<float> g = {15, 12.3, 9.7, 7.4, 3.1, 0, 0, 0, 0, 0};
 
     std::vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
 
@@ -296,7 +296,7 @@ int main() {
     AudioDeviceStart(driverID, inputIOProcId);
     AudioDeviceStart(defaultDeviceID, outputIOProcID);
 
-    sleep(30);
+    sleep(300);
 
     // Cleanup: Stop and release resources
     AudioDeviceStop(driverID, inputIOProcId);

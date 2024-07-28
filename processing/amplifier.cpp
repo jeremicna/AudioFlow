@@ -4,10 +4,10 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(float gain) : gain(gain) {}
+Amplifier::Amplifier(double gain) : gain(gain) {}
 
 void Amplifier::process(std::vector<float> &in) {
-    float scaleFactor = pow(10, gain / 20);
+    double scaleFactor = pow(10, gain / 20);
 
     for (auto& sample : in) {
         sample *= scaleFactor;

@@ -11,13 +11,13 @@
 
 class IIRFilter {
 public:
-    IIRFilter(std::vector<float>& a, std::vector<float>& b);
+    IIRFilter(std::vector<double>& a, std::vector<double>& b);
 
     void processBlock(std::vector<float>& input);
 private:
-    std::vector<float> a_coeffs;
-    std::vector<float> b_coeffs;
-    std::vector<float> state;
+    std::vector<double> a_coeffs;
+    std::vector<double> b_coeffs;
+    std::vector<double> state;
 };
 
 

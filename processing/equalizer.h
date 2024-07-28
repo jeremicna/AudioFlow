@@ -16,7 +16,7 @@ public:
 private:
     std::vector<IIRFilter> filters;
 
-    void calculatePeakFilter(float f, float Q, float gain, float sampleRate, std::vector<float>& a, std::vector<float>& b);
+    void calculatePeakFilter(float f, float Q, float gain, float sampleRate, std::vector<double>& a, std::vector<double>& b);
 };
 
 

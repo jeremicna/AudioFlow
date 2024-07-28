@@ -10,5 +10,5 @@ AudioProcessor::AudioProcessor(Amplifier amplifier, Equalizer equalizer, Convolu
 void AudioProcessor::process(std::vector<float>& input) {
     amplifier.process(input);
     equalizer.process(input);
-    convolutionReverb.process(input);
+    //convolutionReverb.process(input);
 }

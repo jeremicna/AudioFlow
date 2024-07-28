@@ -10,8 +10,8 @@ Equalizer::Equalizer(std::vector<float> &fVector, std::vector<float> &qVector, s
     }
 
     for (int i = 0; i < fVector.size(); i++) {
-        std::vector<float> a;
-        std::vector<float> b;
+        std::vector<double> a;
+        std::vector<double> b;
 
         calculatePeakFilter(fVector[i], qVector[i], gainVector[i], sampleRate, a, b);
 
@@ -25,17 +25,17 @@ void Equalizer::process(std::vector<float>& input) {
     }
 }
 
-void Equalizer::calculatePeakFilter(float f, float q, float gain, float sampleRate, std::vector<float>& a, std::vector<float>& b) {
-    float A = pow(10, gain / 40.0f);
-    float omega = 2.0f * M_PI * f / sampleRate;
-    float alpha = sin(omega) / (2.0f * q);
+void Equalizer::calculatePeakFilter(float f, float q, float gain, float sampleRate, std::vector<double>& a, std::vector<double>& b) {
+    double A = pow(10.0, gain / 40.0);
+    double omega = 2.0 * M_PI * f / sampleRate;
+    double alpha = sin(omega) / (2.0 * q);
 
-    float a0 = 1.0f + alpha / A;
-    float a1 = -2.0f * cos(omega);
-    float a2 = 1.0f - alpha / A;
-    float b0 = 1.0f + alpha * A;
-    float b1 = -2.0f * cos(omega);
-    float b2 = 1.0f - alpha * A;
+    double a0 = 1.0 + alpha / A;
+    double a1 = -2.0 * cos(omega);
+    double a2 = 1.0 - alpha / A;
+    double b0 = 1.0 + alpha * A;
+    double b1 = -2.0 * cos(omega);
+    double b2 = 1.0 - alpha * A;
 
     a = {a0, a1, a2};
     b = {b0, b1, b2};
