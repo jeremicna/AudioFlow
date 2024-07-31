@@ -5,7 +5,7 @@
 #ifndef EQ_CPP_CONFIG_H
 #define EQ_CPP_CONFIG_H
 
-#include "json.hpp"
+#include "../lib/json.hpp"
 #include <fstream>
 
 class Config {

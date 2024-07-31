@@ -11,9 +11,9 @@ find_library(Accelerate Accelerate)
 
 # Link against CoreAudio and CoreFoundation
 set(SOURCES
-        main.cpp
+        src/main.cpp
         processing/amplifier.cpp
-        audioProcessor.cpp
+        src/audioProcessor.cpp
         processing/iirFilter.cpp
         processing/equalizer.cpp
         processing/convolutionReverb.cpp

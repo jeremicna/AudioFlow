@@ -3,7 +3,6 @@
 #include <iostream>
 #include <map>
 #include "audioProcessor.h"
-#include "fileutils/config.h"
 #define driver "HOLLY 2ch"
 
 

@@ -6,11 +6,11 @@
 #define EQ_CPP_AUDIOPROCESSOR_H
 
 #include <map>
-#include "processing/amplifier.h"
-#include "processing/equalizer.h"
-#include "processing/convolutionReverb.h"
-#include "fileutils/config.h"
-#include "fileutils/readIRFile.h"
+#include "../processing/amplifier.h"
+#include "../processing/equalizer.h"
+#include "../processing/convolutionReverb.h"
+#include "../fileutils/config.h"
+#include "../fileutils/readIRFile.h"
 
 class AudioProcessor {
 public:
