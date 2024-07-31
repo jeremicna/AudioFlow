@@ -9,7 +9,7 @@
 
 class Amplifier {
 public:
-    Amplifier(double gain);
+    Amplifier(float gain);
 
     void process(std::vector<float>& in);
 private:

@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <cstdint>
 #include <vector>
 #include <cstring>
 #include "readIRFile.h"

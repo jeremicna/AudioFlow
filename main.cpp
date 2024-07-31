@@ -2,10 +2,8 @@
 #include <CoreAudio/CoreAudio.h>
 #include <iostream>
 #include <map>
-#include "processing/audioProcessor.h"
-#include "processing/equalizer.h"
-#include "fileutils/readIRFile.h"
-#include "processing/convolutionReverb.h"
+#include "audioProcessor.h"
+#include "fileutils/config.h"
 #define driver "HOLLY 2ch"
 
 
@@ -13,7 +11,9 @@ UInt32 driverID;
 UInt32 defaultDeviceID;
 std::vector<float> sharedBuffer;
 std::mutex bufferMutex;
-AudioProcessor* audioProcessor = nullptr;
+AudioProcessor* audioProcessor;
+std::mutex audioProcessorMutex;
+Config config;
 
 
 std::map<UInt32 , std::string> getAudioDevices() {
@@ -253,13 +253,8 @@ OSStatus defaultDeviceIOProc(
 
 // Separate main for win and mac
 int main() {
-    std::vector<float> f = {32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
-    std::vector<float> q = {1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41, 1.41};
-    std::vector<float> g = {15, 12.3, 9.7, 7.4, 3.1, 0, 0, 0, 0, 0};
-
-    std::vector<float> ir = readIRFile("/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/assets/ir.wav");
-
-    audioProcessor = new AudioProcessor(Amplifier(-15), Equalizer(f, q, g, 48000), ConvolutionReverb(ir));
+    config.loadConfig();
+    audioProcessor = new AudioProcessor(config);
 
     // Get device IDs
     std::map<UInt32, std::string> ad = getAudioDevices();
@@ -296,7 +291,17 @@ int main() {
     AudioDeviceStart(driverID, inputIOProcId);
     AudioDeviceStart(defaultDeviceID, outputIOProcID);
 
-    sleep(300);
+    while (true) {
+        bool upToDate = config.loadConfig();
+        if (!upToDate || audioProcessor == nullptr) {
+            std::cout << "updated" << std::endl;
+            AudioProcessor* updated = new AudioProcessor(config);
+            audioProcessorMutex.lock();
+            audioProcessor = updated;
+            audioProcessorMutex.unlock();
+        }
+        usleep(100);
+    }
 
     // Cleanup: Stop and release resources
     AudioDeviceStop(driverID, inputIOProcId);

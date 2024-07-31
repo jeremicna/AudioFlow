@@ -1,4 +1,0 @@
-"/Users/jeremicampagna/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/jeremicampagna/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S "/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp" -B "/Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/cmake-build-debug"
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/jeremicampagna/Desktop/internship grind/projects/eq-cpp/cmake-build-debug

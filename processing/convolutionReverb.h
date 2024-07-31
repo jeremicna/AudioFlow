@@ -10,7 +10,7 @@
 
 class ConvolutionReverb {
 public:
-    ConvolutionReverb(std::vector<float> impulseResponse);
+    ConvolutionReverb(std::vector<float> impulseResponse, float dryWet);
 
     std::vector<std::complex<float>> fft(const std::vector<float> input);
     std::vector<float> ifft(std::vector<std::complex<float>> input);
@@ -22,6 +22,7 @@ private:
     std::vector<float> overlap;
     std::vector<float> impulseResponse;
     std::vector<std::complex<float>> impulseResponseFFT;
+    float dryWet;
 };
 
 

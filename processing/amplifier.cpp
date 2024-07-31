@@ -4,7 +4,7 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(double gain) : gain(gain) {}
+Amplifier::Amplifier(float gain) : gain(gain) {}
 
 void Amplifier::process(std::vector<float> &in) {
     double scaleFactor = pow(10, gain / 20);

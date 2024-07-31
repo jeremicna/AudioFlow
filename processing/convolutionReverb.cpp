@@ -4,8 +4,7 @@
 
 #include "convolutionReverb.h"
 
-
-ConvolutionReverb::ConvolutionReverb(std::vector<float> impulseResponse) : impulseResponse(impulseResponse) {
+ConvolutionReverb::ConvolutionReverb(std::vector<float> impulseResponse, float dryWet) : impulseResponse(impulseResponse), dryWet(dryWet) {
     fftSize = 1 << static_cast<int>(ceil(log2(8192 + impulseResponse.size() - 1)));
     fftSetup = vDSP_create_fftsetup(log2f(fftSize), FFT_RADIX2);
     overlap.resize(8192 + impulseResponse.size() - 1, 0);
@@ -90,6 +89,10 @@ void ConvolutionReverb::process(std::vector<float>& input) {
     std::copy(overlap.begin(), overlap.begin() + inputSize, output.begin());
     overlap.erase(overlap.begin(), overlap.begin() + inputSize);
     overlap.resize(8192 + impulseResponse.size() - 1);
+
+    for (size_t i = 0; i < output.size(); ++i) {
+        output[i] = (output[i] * dryWet) + (input[i] * (1 - dryWet));
+    }
 
     input = output;
 }

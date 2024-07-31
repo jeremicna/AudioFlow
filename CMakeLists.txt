@@ -13,11 +13,12 @@ find_library(Accelerate Accelerate)
 set(SOURCES
         main.cpp
         processing/amplifier.cpp
-        processing/audioProcessor.cpp
+        audioProcessor.cpp
         processing/iirFilter.cpp
         processing/equalizer.cpp
         processing/convolutionReverb.cpp
         fileutils/readIRFile.cpp
+        fileutils/config.cpp
         )
 
 add_executable(eq_cpp ${SOURCES})

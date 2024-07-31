@@ -6,16 +6,19 @@
 #define EQ_CPP_AUDIOPROCESSOR_H
 
 #include <map>
-#include "amplifier.h"
-#include "equalizer.h"
-#include "convolutionReverb.h"
+#include "processing/amplifier.h"
+#include "processing/equalizer.h"
+#include "processing/convolutionReverb.h"
+#include "fileutils/config.h"
+#include "fileutils/readIRFile.h"
 
 class AudioProcessor {
 public:
-    AudioProcessor(Amplifier amplifier, Equalizer equalizer, ConvolutionReverb convolutionReverb);
+    AudioProcessor(Config& config);
 
     void process(std::vector<float>& input);
 private:
+    Config config;
     Amplifier amplifier;
     Equalizer equalizer;
     ConvolutionReverb convolutionReverb;
