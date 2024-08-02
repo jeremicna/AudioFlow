@@ -13,3 +13,11 @@ void Amplifier::process(std::vector<float> &in) {
         sample *= scaleFactor;
     }
 }
+
+float Amplifier::getGain() {
+    return gain;
+}
+
+void Amplifier::setGain(float gain) {
+    this->gain = gain;
+}

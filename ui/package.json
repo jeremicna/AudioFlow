@@ -1,0 +1,14 @@
+{
+  "name": "eq-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for equalizer",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "jeremicna",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^31.3.1"
+  }
+}

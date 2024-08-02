@@ -20,10 +20,10 @@ struct Chunk {
     std::vector<char> data;
 };
 
-std::vector<float> readIRFile(const std::string &filename) {
-    std::ifstream file(filename, std::ios::binary);
+std::vector<float> readIRFile(const std::string &path) {
+    std::ifstream file(path, std::ios::binary);
     if (!file) {
-        std::cerr << "Cannot open file: " << filename << std::endl;
+        std::cerr << "Cannot open file: " << path << std::endl;
     }
 
     WAVHeader header;

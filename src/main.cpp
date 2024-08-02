@@ -293,8 +293,7 @@ int main() {
     while (true) {
         bool upToDate = config.loadConfig();
         if (!upToDate || audioProcessor == nullptr) {
-            std::cout << "updated" << std::endl;
-            AudioProcessor* updated = new AudioProcessor(config);
+            AudioProcessor* updated = new AudioProcessor(config, audioProcessor);
             audioProcessorMutex.lock();
             audioProcessor = updated;
             audioProcessorMutex.unlock();

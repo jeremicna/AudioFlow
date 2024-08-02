@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>audiooo</title>
+    <link rel="stylesheet" href="styles/output.css">
+</head>
+<body class="bg-slate-900 px-4 py-4 space-y-4 select-none">
+<div id="equalizerContainer" class="rounded-md shadow-xl shadow-inner outline outline-2 outline-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 px-5 py-3 space-y-2 w-full h-3/5">
+    <div id="equalizerHeader" class="flex flex-row justify-between relative">
+        <div class="font-sans font-bold text-2xl text-slate-400">Equalizer</div>
+        <label class="flex justify-between items-center">
+            <input id="equalizerToggle" type="checkbox" class="appearance-none peer">
+            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6"></span>
+        </label>
+    </div>
+    <div id="preamp" class="space-y-1">
+        <div class="font-sans font-medium text-base text-slate-400">Preamplification</div>
+        <input id="preampSlider" type="range" step="1" min="-30" max="30" value="0" class="outline outline-2 outline-slate-900 w-full h-4 bg-slate-800 rounded-md">
+        <div id="preampDecibalLabels" class="flex justify-between font-sans font-medium text-xs text-slate-400">
+            <label>-30 dB</label>
+            <label>0 dB</label>
+            <label>+30 dB</label>
+        </div>
+    </div>
+    <div id="parameters" class="">
+        <div class="font-sans font-medium text-base text-slate-400">Parameters
+            <div id="sideBar" class="">
+                <div id="hzLabel" class="font-sans font-medium text-xs text-slate-400 py-1">Hz</div>
+                <div id="sliderLabels" class="flex flex-col font-sans font-medium text-xs text-slate-400 justify-between h-[232px]">
+                    <label>+30 dB&nbsp&nbsp-</label>
+                    <label>0 dB&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-</label>
+                    <label>-30 dB&nbsp&nbsp-</label>
+                </div>
+                <div id="gainLabel" class="font-sans font-medium text-xs text-slate-400 pt-[2px]">Gain</div>
+                <div id="qLabel" class="font-sans font-medium text-xs text-slate-400 pt-[3px]">Q value</div>
+            </div>
+            <div id="sliders" class="">
+                <div id="eqSliderContainer0" class="eqSliderContainer">
+                    <input id="fBox0" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[92px] inset-y-[170px]">
+                    <input id="eqSlider0" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 -inset-x-[8px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox0" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[92px] inset-y-[422px]">
+                    <input id="qBox0" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[92px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer1" class="eqSliderContainer">
+                    <input id="fBox1" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[129px] inset-y-[170px]">
+                    <input id="eqSlider1" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[29px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox1" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[129px] inset-y-[422px]">
+                    <input id="qBox1" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[129px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer2" class="eqSliderContainer">
+                    <input id="fBox2" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[166px] inset-y-[170px]">
+                    <input id="eqSlider2" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[66px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox2" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[166px] inset-y-[422px]">
+                    <input id="qBox2" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[166px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer3" class="eqSliderContainer">
+                    <input id="fBox3" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[203px] inset-y-[170px]">
+                    <input id="eqSlider3" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[103px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox3" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[203px] inset-y-[422px]">
+                    <input id="qBox3" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[203px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer4" class="eqSliderContainer">
+                    <input id="fBox4" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[240px] inset-y-[170px]">
+                    <input id="eqSlider4" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[140px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox4" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[240px] inset-y-[422px]">
+                    <input id="qBox4" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[240px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer5" class="eqSliderContainer">
+                    <input id="fBox5" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[277px] inset-y-[170px]">
+                    <input id="eqSlider5" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[177px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox5" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[277px] inset-y-[422px]">
+                    <input id="qBox5" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[277px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer6" class="eqSliderContainer">
+                    <input id="fBox6" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[314px] inset-y-[170px]">
+                    <input id="eqSlider6" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[214px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox6" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[314px] inset-y-[422px]">
+                    <input id="qBox6" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[314px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer7" class="eqSliderContainer">
+                    <input id="fBox7" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[351px] inset-y-[170px]">
+                    <input id="eqSlider7" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[251px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox7" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[351px] inset-y-[422px]">
+                    <input id="qBox7" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[351px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer8" class="eqSliderContainer">
+                    <input id="fBox8" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[170px]">
+                    <input id="eqSlider8" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[288px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox8" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[422px]">
+                    <input id="qBox8" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[442px]">
+                </div>
+                <div id="eqSliderContainer9" class="eqSliderContainer">
+                    <input id="fBox9" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[170px]">
+                    <input id="eqSlider9" type="range" step="1" min="-30" max="30" value="0" class="absolute outline outline-2 outline-slate-900 inset-x-[288px] inset-y-[296px] w-56 h-4 bg-slate-800 rounded-md">
+                    <input id="gainBox9" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[422px]">
+                    <input id="qBox9" type="number" class="absolute text-center w-6 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[388px] inset-y-[442px]">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="reverbContainer" class="rounded-md shadow-xl shadow-inner outline outline-2 outline-slate-800 bg-gradient-to-b from-slate-900 to-slate-800 px-5 py-3 w-full h-[280px]">
+    <div id="reverbHeader" class="flex flex-row justify-between relative">
+        <div class="font-sans font-bold text-2xl text-slate-400">Reverb</div>
+        <label class="flex justify-between items-center">
+            <input id="reverbToggle" type="checkbox" class="appearance-none peer">
+            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6"></span>
+        </label>
+    </div>
+</div>
+<script src="./renderer.js"></script>
+</body>
+</html>

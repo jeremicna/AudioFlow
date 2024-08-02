@@ -12,8 +12,11 @@ public:
     Amplifier(float gain);
 
     void process(std::vector<float>& in);
+
+    float getGain();
+    void setGain(float gain);
 private:
-    double gain;
+    float gain;
 };
 
 

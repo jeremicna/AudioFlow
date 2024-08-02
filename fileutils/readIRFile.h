@@ -5,6 +5,6 @@
 #ifndef EQ_CPP_READIRFILE_H
 #define EQ_CPP_READIRFILE_H
 
-std::vector<float> readIRFile(const std::string &filename);
+std::vector<float> readIRFile(const std::string &path);
 
 #endif //EQ_CPP_READIRFILE_H

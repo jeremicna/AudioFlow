@@ -15,6 +15,7 @@
 class AudioProcessor {
 public:
     AudioProcessor(Config& config);
+    AudioProcessor(Config& config, AudioProcessor* old);
 
     void process(std::vector<float>& input);
 private:
