@@ -7,9 +7,9 @@
 
 AudioProcessor::AudioProcessor(Config& config) :
     config(config),
-    amplifier(config.ampGain),
-    equalizer(config.equalizerF, config.equalizerQ, config.equalizerG, 48000),
-    convolutionReverb(config.irFilePath, config.reverbDryWet)
+    amplifier(*new Amplifier(config.ampGain)),
+    equalizer(*new Equalizer(config.equalizerF, config.equalizerQ, config.equalizerG, 48000)),
+    convolutionReverb(*new ConvolutionReverb(config.irFilePath, config.reverbDryWet))
 {}
 
 AudioProcessor::AudioProcessor(Config& config, AudioProcessor* old) :

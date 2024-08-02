@@ -20,9 +20,9 @@ public:
     void process(std::vector<float>& input);
 private:
     Config config;
-    Amplifier amplifier;
-    Equalizer equalizer;
-    ConvolutionReverb convolutionReverb;
+    Amplifier& amplifier;
+    Equalizer& equalizer;
+    ConvolutionReverb& convolutionReverb;
 };
 
 
