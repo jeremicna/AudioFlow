@@ -4,44 +4,18 @@
 
 #include "iirFilter.h"
 
-
 IIRFilter::IIRFilter(float f, float q, float g, float sampleRate)
-    : f(f), q(q), g(g) {
+    : f(Smoother(f, f, 0)), q(Smoother(q, q, 0)), g(Smoother(g, g, 0)), sampleRate(Smoother(sampleRate, sampleRate, 0)) {
 
-    calculatePeakFilter(f, q, g, sampleRate, a_coeffs, b_coeffs);
+    calculatePeakFilter();
     state = std::vector<double>(a_coeffs.size(), 0.0);
-
-    if (a_coeffs[0] != 1.0) {
-        throw std::invalid_argument("The first coefficient of a must be 1.");
-    }
-}
-
-void IIRFilter::calculatePeakFilter(float f, float q, float g, float sampleRate, std::vector<double>& a, std::vector<double>& b) {
-    double A = pow(10.0, g / 40.0);
-    double omega = 2.0 * M_PI * f / sampleRate;
-    double alpha = sin(omega) / (2.0 * q);
-
-    double a0 = 1.0 + alpha / A;
-    double a1 = -2.0 * cos(omega);
-    double a2 = 1.0 - alpha / A;
-    double b0 = 1.0 + alpha * A;
-    double b1 = -2.0 * cos(omega);
-    double b2 = 1.0 - alpha * A;
-
-    a = {a0, a1, a2};
-    b = {b0, b1, b2};
-
-    for (auto& coeff : a) {
-        coeff /= a0;
-    }
-    for (auto& coeff : b) {
-        coeff /= a0;
-    }
 }
 
 
-void IIRFilter::processBlock(std::vector<float>& input) {
+void IIRFilter::process(std::vector<float>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
+        calculatePeakFilter();
+
         double w0 = input[n];
         for (size_t k = 1; k < a_coeffs.size(); ++k) {
             w0 -= a_coeffs[k] * state[k - 1];
@@ -60,4 +34,52 @@ void IIRFilter::processBlock(std::vector<float>& input) {
             state[0] = w0;
         }
     }
+}
+
+void IIRFilter::calculatePeakFilter() {
+    auto start = high_resolution_clock::now();
+    double A = pow(10.0, g.currentValue() / 40.0);
+    double omega = 2.0 * M_PI * f.currentValue() / sampleRate.currentValue();
+    double alpha = sin(omega) / (2.0 * q.currentValue());
+
+    double a0 = 1.0 + alpha / A;
+    double a1 = -2.0 * cos(omega);
+    double a2 = 1.0 - alpha / A;
+    double b0 = 1.0 + alpha * A;
+    double b1 = -2.0 * cos(omega);
+    double b2 = 1.0 - alpha * A;
+
+    a_coeffs = {a0, a1, a2};
+    b_coeffs = {b0, b1, b2};
+
+    for (auto& coeff : a_coeffs) {
+        coeff /= a0;
+    }
+    for (auto& coeff : b_coeffs) {
+        coeff /= a0;
+    }
+}
+
+float IIRFilter::getF() {
+    return f.currentValueNoChange();
+}
+
+void IIRFilter::setF(float f) {
+    this->f = Smoother(this->f.currentValueNoChange(), f, 256);
+}
+
+float IIRFilter::getQ() {
+    return q.currentValueNoChange();
+}
+
+void IIRFilter::setQ(float q) {
+    this->q = Smoother(this->q.currentValueNoChange(), q, 256);
+}
+
+float IIRFilter::getG() {
+    return g.currentValueNoChange();
+}
+
+void IIRFilter::setG(float g) {
+    this->g = Smoother(this->g.currentValueNoChange(), g, 256);
 }

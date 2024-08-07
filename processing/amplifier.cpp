@@ -4,20 +4,19 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(float gain) : gain(gain) {}
+Amplifier::Amplifier(float gain) : gain(Smoother(gain, gain, 0)) {}
 
 void Amplifier::process(std::vector<float> &in) {
-    double scaleFactor = pow(10, gain / 20);
-
     for (auto& sample : in) {
+        double scaleFactor = pow(10, gain.currentValue() / 20);
         sample *= scaleFactor;
     }
 }
 
 float Amplifier::getGain() {
-    return gain;
+    return gain.currentValueNoChange();
 }
 
 void Amplifier::setGain(float gain) {
-    this->gain = gain;
+    this->gain = Smoother(this->gain.currentValueNoChange(), gain, 256);
 }
