@@ -8,6 +8,7 @@
 #include <map>
 #include <Accelerate/Accelerate.h>
 #include "../fileutils/readIRFile.h"
+#include "smoother.h"
 
 class ConvolutionReverb {
 public:
@@ -23,7 +24,7 @@ public:
     float getDryWet();
     void setDryWet(float dryWet);
 private:
-    float dryWet;
+    Smoother dryWet;
     size_t fftSize;
     FFTSetup fftSetup;
     std::vector<float> overlap;

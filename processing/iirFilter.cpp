@@ -14,7 +14,9 @@ IIRFilter::IIRFilter(float f, float q, float g, float sampleRate)
 
 void IIRFilter::process(std::vector<float>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
-        calculatePeakFilter();
+        if (n < 256) {
+            calculatePeakFilter();
+        }
 
         double w0 = input[n];
         for (size_t k = 1; k < a_coeffs.size(); ++k) {
