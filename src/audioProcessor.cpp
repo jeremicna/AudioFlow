@@ -22,11 +22,16 @@ AudioProcessor::AudioProcessor(Config& config, AudioProcessor* old) :
         amplifier.setGain(config.ampGain);
     }
 
-    std::vector<IIRFilter> filters = equalizer.getFilters();
+    std::vector<IIRFilter>& filters = *equalizer.getFilters();
     for (size_t i = 0; i < filters.size(); ++i) {
-        if (filters[i].f != config.equalizerF[i] || filters[i].q != config.equalizerQ[i] || filters[i].g != config.equalizerG[i]) {
-            filters[i] = IIRFilter(config.equalizerF[i], config.equalizerQ[i], config.equalizerG[i], 48000);
-            equalizer.setFilters(filters);
+        if (filters[i].getF() != config.equalizerF[i]) {
+            filters[i].setF(config.equalizerF[i]);
+        }
+        if (filters[i].getQ() != config.equalizerQ[i]) {
+            filters[i].setQ(config.equalizerQ[i]);
+        }
+        if (filters[i].getG() != config.equalizerG[i]) {
+            filters[i].setG(config.equalizerG[i]);
         }
     }
 
@@ -40,5 +45,5 @@ AudioProcessor::AudioProcessor(Config& config, AudioProcessor* old) :
 void AudioProcessor::process(std::vector<float>& input) {
     amplifier.process(input);
     equalizer.process(input);
-    convolutionReverb.process(input);
+    //convolutionReverb.process(input);
 }

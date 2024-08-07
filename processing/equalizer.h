@@ -10,19 +10,13 @@
 
 class Equalizer {
 public:
-    std::vector<float> &fVector;
-    std::vector<float> &qVector;
-    std::vector<float> &gVector;
-    float sampleRate;
-
     Equalizer(std::vector<float>& fVector, std::vector<float>& qVector, std::vector<float>& gVector, float sampleRate);
 
     void process(std::vector<float>& input);
 
-    std::vector<IIRFilter> getFilters();
-    void setFilters(std::vector<IIRFilter> filters);
+    std::vector<IIRFilter>* getFilters();
 private:
-    std::vector<IIRFilter> filters;
+    std::vector<IIRFilter>* filters;
 };
 
 

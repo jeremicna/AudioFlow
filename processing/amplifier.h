@@ -6,6 +6,7 @@
 #define EQ_CPP_AMPLIFIER_H
 
 #include <map>
+#include "smoother.h"
 
 class Amplifier {
 public:
@@ -16,7 +17,7 @@ public:
     float getGain();
     void setGain(float gain);
 private:
-    float gain;
+    Smoother gain;
 };
 
 

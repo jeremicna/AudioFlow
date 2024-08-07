@@ -17,6 +17,7 @@ set(SOURCES
         processing/iirFilter.cpp
         processing/equalizer.cpp
         processing/convolutionReverb.cpp
+        processing/smoother.cpp
         fileutils/readIRFile.cpp
         fileutils/config.cpp
         )

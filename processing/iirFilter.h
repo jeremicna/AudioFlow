@@ -8,19 +8,30 @@
 #include <map>
 #include <vector>
 #include <stdexcept>
+#include "smoother.h"
 
 class IIRFilter {
 public:
-    float f;
-    float q;
-    float g;
-
     IIRFilter(float f, float q, float g, float sampleRate);
 
-    void processBlock(std::vector<float>& input);
+    void process(std::vector<float>& input);
 
-    void calculatePeakFilter(float f, float q, float g, float sampleRate, std::vector<double>& a, std::vector<double>& b);
+    void calculatePeakFilter();
+
+    float getF();
+    void setF(float gain);
+
+    float getQ();
+    void setQ(float gain);
+
+    float getG();
+    void setG(float gain);
 private:
+    Smoother f;
+    Smoother q;
+    Smoother g;
+    Smoother sampleRate;
+
     std::vector<double> a_coeffs;
     std::vector<double> b_coeffs;
     std::vector<double> state;
