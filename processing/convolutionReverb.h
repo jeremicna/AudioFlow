@@ -25,11 +25,10 @@ public:
     void setDryWet(float dryWet);
 private:
     Smoother dryWet;
-    size_t fftSize;
     FFTSetup fftSetup;
     std::vector<float> overlap;
     std::vector<float> impulseResponse;
-    std::vector<std::complex<float>> impulseResponseFFT;
+    std::vector<std::vector<std::complex<float>>> impulseResponseFFTs;
 };
 
 

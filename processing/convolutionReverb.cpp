@@ -3,16 +3,23 @@
 //
 
 #include "convolutionReverb.h"
+#include "iostream"
 
 
 ConvolutionReverb::ConvolutionReverb(std::string path, float dryWet) : path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
     impulseResponse = readIRFile(path);
-    fftSize = 1 << static_cast<int>(ceil(log2(8192 + impulseResponse.size() - 1)));
-    fftSetup = vDSP_create_fftsetup(log2f(fftSize), FFT_RADIX2);
+    size_t chunkSize = 16384;
+    size_t paddedSize = chunkSize * 2;
+    fftSetup = vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2);
     overlap.resize(8192 + impulseResponse.size() - 1, 0);
 
-    impulseResponse.resize(fftSize, 0);
-    impulseResponseFFT = fft(impulseResponse);
+    impulseResponseFFTs.resize(ceil(static_cast<float>(impulseResponse.size() / chunkSize)));
+    impulseResponse.resize(impulseResponseFFTs.size() * chunkSize, 0);
+    for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
+        std::vector<float> chunked = std::vector<float>(impulseResponse.begin() + i * chunkSize, impulseResponse.begin() + (i + 1) * chunkSize);
+        chunked.resize(paddedSize, 0);
+        impulseResponseFFTs[i] = fft(chunked);
+    }
 }
 
 std::vector<std::complex<float>> ConvolutionReverb::fft(const std::vector<float> input) {
@@ -74,23 +81,33 @@ std::vector<float> ConvolutionReverb::ifft(std::vector<std::complex<float>> inpu
 
 void ConvolutionReverb::process(std::vector<float>& input) {
     size_t inputSize = input.size();
-    input.resize(fftSize, 0);
+    size_t chunkSize = impulseResponseFFTs[0].size();
+    size_t totalSize = impulseResponseFFTs.size() * chunkSize;
+
+    input.resize(chunkSize, 0);
     std::vector<std::complex<float>> inputFFT = fft(input);
 
-    std::vector<std::complex<float>> convolved(inputFFT.size());
-    for (size_t i = 0; i < inputFFT.size(); ++i) {
-        convolved[i] = inputFFT[i] * impulseResponseFFT[i];
+    std::vector<float> totalInverseFFT(totalSize, 0);
+    for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
+        std::vector<std::complex<float>> convolved(inputFFT.size());
+        for (size_t j = 0; j < inputFFT.size(); ++j) {
+            convolved[j] = inputFFT[j] * impulseResponseFFTs[i][j];
+        }
+
+        std::vector<float> inverseFFT = ifft(convolved);
+
+        for (size_t k = 0; k < inverseFFT.size(); ++k) {
+            totalInverseFFT[k + i * (chunkSize / 2)] += inverseFFT[k];
+        }
     }
 
-    std::vector<float> inverseFFT = ifft(convolved);
-
     std::vector<float> output(inputSize);
-    for (size_t i = 0; i < input.size(); ++i) {
-        overlap[i] += inverseFFT[i];
+    for (size_t i = 0; i < totalInverseFFT.size(); ++i) {
+        overlap[i] += totalInverseFFT[i];
     }
     std::copy(overlap.begin(), overlap.begin() + inputSize, output.begin());
     overlap.erase(overlap.begin(), overlap.begin() + inputSize);
-    overlap.resize(8192 + impulseResponse.size() - 1);
+    overlap.resize(8192 + totalSize);
 
     for (size_t i = 0; i < output.size(); ++i) {
         float dw = dryWet.currentValue();

@@ -3,13 +3,11 @@ project(eq_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Find CoreAudio and CoreFoundation frameworks
 find_library(CoreAudio CoreAudio)
 find_library(CoreFoundation CoreFoundation)
 find_library(AudioToolbox AudioToolbox)
 find_library(Accelerate Accelerate)
 
-# Link against CoreAudio and CoreFoundation
 set(SOURCES
         src/main.cpp
         processing/amplifier.cpp
