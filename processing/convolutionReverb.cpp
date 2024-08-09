@@ -7,12 +7,12 @@
 
 
 ConvolutionReverb::ConvolutionReverb(std::string path, float dryWet) : path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
-    impulseResponse = readIRFile(path);
-    size_t chunkSize = 16384;
-    size_t paddedSize = chunkSize * 2;
-    fftSetup = vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2);
-    overlap.resize(8192 + impulseResponse.size() - 1, 0);
+    chunkSize = 16384;
+    paddedSize = chunkSize * 2;
 
+    fftSetup = vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2);
+
+    impulseResponse = readIRFile(path);
     impulseResponseFFTs.resize(ceil(static_cast<float>(impulseResponse.size() / chunkSize)));
     impulseResponse.resize(impulseResponseFFTs.size() * chunkSize, 0);
     for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
@@ -20,6 +20,8 @@ ConvolutionReverb::ConvolutionReverb(std::string path, float dryWet) : path(path
         chunked.resize(paddedSize, 0);
         impulseResponseFFTs[i] = fft(chunked);
     }
+
+    overlap.resize(impulseResponseFFTs.size() * chunkSize, 0);
 }
 
 std::vector<std::complex<float>> ConvolutionReverb::fft(const std::vector<float> input) {
@@ -81,10 +83,9 @@ std::vector<float> ConvolutionReverb::ifft(std::vector<std::complex<float>> inpu
 
 void ConvolutionReverb::process(std::vector<float>& input) {
     size_t inputSize = input.size();
-    size_t chunkSize = impulseResponseFFTs[0].size();
-    size_t totalSize = impulseResponseFFTs.size() * chunkSize;
+    size_t totalSize = (impulseResponseFFTs.size() + 1) * (chunkSize);
 
-    input.resize(chunkSize, 0);
+    input.resize(paddedSize, 0);
     std::vector<std::complex<float>> inputFFT = fft(input);
 
     std::vector<float> totalInverseFFT(totalSize, 0);
@@ -97,7 +98,7 @@ void ConvolutionReverb::process(std::vector<float>& input) {
         std::vector<float> inverseFFT = ifft(convolved);
 
         for (size_t k = 0; k < inverseFFT.size(); ++k) {
-            totalInverseFFT[k + i * (chunkSize / 2)] += inverseFFT[k];
+            totalInverseFFT[k + i * chunkSize] += inverseFFT[k];
         }
     }
 
@@ -107,7 +108,7 @@ void ConvolutionReverb::process(std::vector<float>& input) {
     }
     std::copy(overlap.begin(), overlap.begin() + inputSize, output.begin());
     overlap.erase(overlap.begin(), overlap.begin() + inputSize);
-    overlap.resize(8192 + totalSize);
+    overlap.resize(totalSize);
 
     for (size_t i = 0; i < output.size(); ++i) {
         float dw = dryWet.currentValue();

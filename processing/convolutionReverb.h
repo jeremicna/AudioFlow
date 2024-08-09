@@ -24,6 +24,8 @@ public:
     float getDryWet();
     void setDryWet(float dryWet);
 private:
+    size_t chunkSize;
+    size_t paddedSize;
     Smoother dryWet;
     FFTSetup fftSetup;
     std::vector<float> overlap;
