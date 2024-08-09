@@ -4,10 +4,6 @@
 
 #include "audioProcessor.h"
 
-#include <chrono>
-#include "iostream"
-using namespace std::chrono;
-
 AudioProcessor::AudioProcessor(Config& config) :
     config(config),
     amplifier(*new Amplifier(config.ampGain)),
@@ -49,9 +45,5 @@ void AudioProcessor::process(std::vector<float>& input) {
     // ADD PROTECTION FOR IF PROCESSING TOOK TOO LONG, AND IF BUFFER NOT 8192
     amplifier.process(input);
     equalizer.process(input);
-    auto start = high_resolution_clock::now();
     convolutionReverb.process(input);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    std::cout << duration.count() << std::endl;
 }

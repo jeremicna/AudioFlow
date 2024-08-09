@@ -298,7 +298,7 @@ int main() {
             audioProcessor = updated;
             audioProcessorMutex.unlock();
         }
-        usleep(100);
+        usleep(250);
     }
 
     // Cleanup: Stop and release resources

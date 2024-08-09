@@ -3,28 +3,30 @@
 //
 
 #include "convolutionReverb.h"
-#include "iostream"
 
 
 ConvolutionReverb::ConvolutionReverb(std::string path, float dryWet) : path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
-    chunkSize = 16384;
+    chunkSize = 32768;
     paddedSize = chunkSize * 2;
-
-    fftSetup = vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2);
-
     impulseResponse = readIRFile(path);
     impulseResponseFFTs.resize(ceil(static_cast<float>(impulseResponse.size() / chunkSize)));
     impulseResponse.resize(impulseResponseFFTs.size() * chunkSize, 0);
+
+    fftSetups.resize(ceil(static_cast<float>(impulseResponse.size() / chunkSize)));
+    for (size_t i = 0; i < fftSetups.size(); ++i) {
+        fftSetups[i] = vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2);
+    }
+
     for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
         std::vector<float> chunked = std::vector<float>(impulseResponse.begin() + i * chunkSize, impulseResponse.begin() + (i + 1) * chunkSize);
         chunked.resize(paddedSize, 0);
-        impulseResponseFFTs[i] = fft(chunked);
+        impulseResponseFFTs[i] = fft(chunked, fftSetups[i]);
     }
 
     overlap.resize(impulseResponseFFTs.size() * chunkSize, 0);
 }
 
-std::vector<std::complex<float>> ConvolutionReverb::fft(const std::vector<float> input) {
+std::vector<std::complex<float>> ConvolutionReverb::fft(const std::vector<float> input, FFTSetup fftSetup) {
     const size_t n = input.size();
 
     std::vector<float> real(n / 2);
@@ -52,7 +54,7 @@ std::vector<std::complex<float>> ConvolutionReverb::fft(const std::vector<float>
     return output;
 }
 
-std::vector<float> ConvolutionReverb::ifft(std::vector<std::complex<float>> input) {
+std::vector<float> ConvolutionReverb::ifft(std::vector<std::complex<float>> input, FFTSetup fftSetup) {
     const size_t n = input.size();
 
     std::vector<float> real(n);
@@ -86,20 +88,30 @@ void ConvolutionReverb::process(std::vector<float>& input) {
     size_t totalSize = (impulseResponseFFTs.size() + 1) * (chunkSize);
 
     input.resize(paddedSize, 0);
-    std::vector<std::complex<float>> inputFFT = fft(input);
+    std::vector<std::complex<float>> inputFFT = fft(input, fftSetups[0]);
 
     std::vector<float> totalInverseFFT(totalSize, 0);
+    std::mutex totalInverseFFTMutex;
+    std::vector<std::thread> threads;
     for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
-        std::vector<std::complex<float>> convolved(inputFFT.size());
-        for (size_t j = 0; j < inputFFT.size(); ++j) {
-            convolved[j] = inputFFT[j] * impulseResponseFFTs[i][j];
-        }
+        threads.emplace_back([&, i]() {
+            std::vector<std::complex<float>> convolved(inputFFT.size());
+            for (size_t j = 0; j < inputFFT.size(); ++j) {
+                convolved[j] = inputFFT[j] * impulseResponseFFTs[i][j];
+            }
 
-        std::vector<float> inverseFFT = ifft(convolved);
+            std::vector<float> inverseFFT = ifft(convolved, fftSetups[i]);
 
-        for (size_t k = 0; k < inverseFFT.size(); ++k) {
-            totalInverseFFT[k + i * chunkSize] += inverseFFT[k];
-        }
+            totalInverseFFTMutex.lock();
+            for (size_t k = 0; k < inverseFFT.size(); ++k) {
+                totalInverseFFT[k + i * chunkSize] += inverseFFT[k];
+            }
+            totalInverseFFTMutex.unlock();
+        });
+    }
+
+    for (auto& t : threads) {
+        t.join();
     }
 
     std::vector<float> output(inputSize);
