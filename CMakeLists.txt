@@ -20,6 +20,8 @@ set(SOURCES
         fileutils/config.cpp
         )
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build)
+
 add_executable(eq_cpp ${SOURCES})
 
 target_link_libraries(eq_cpp ${CoreAudio} ${CoreFoundation} ${AudioToolbox} ${Accelerate})

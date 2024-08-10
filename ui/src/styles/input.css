@@ -8,7 +8,6 @@
 }
 
 #preampSlider::-webkit-slider-thumb {
-    -webkit-appearance: none;
     width: 24px;
     height: 100%;
     background-color: #3730a3;
@@ -17,12 +16,11 @@
 
 .eqSliderContainer input[type="range"] {
     -webkit-appearance: none;
-    -webkit-transform:rotate(270deg);
+    transform: rotate(270deg); /* No need for -webkit-prefix here */
     cursor: pointer;
 }
 
 .eqSliderContainer input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
     width: 24px;
     height: 100%;
     background-color: #3730a3;

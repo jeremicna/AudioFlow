@@ -3,6 +3,7 @@
 //
 
 #include "audioProcessor.h"
+#include <chrono>
 
 AudioProcessor::AudioProcessor(Config& config) :
     config(config),
@@ -42,7 +43,6 @@ AudioProcessor::AudioProcessor(Config& config, AudioProcessor* old) :
 }
 
 void AudioProcessor::process(std::vector<float>& input) {
-    // ADD PROTECTION FOR IF PROCESSING TOOK TOO LONG, AND IF BUFFER NOT 8192
     amplifier.process(input);
     equalizer.process(input);
     convolutionReverb.process(input);

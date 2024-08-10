@@ -2,16 +2,23 @@
 #include <CoreAudio/CoreAudio.h>
 #include <iostream>
 #include <map>
+#include <csignal>
 #include "audioProcessor.h"
 #define driver "HOLLY 2ch"
 
 
 UInt32 driverID;
 UInt32 defaultDeviceID;
+
+AudioDeviceIOProcID inputIOProcId;
+AudioDeviceIOProcID outputIOProcID;
+
 std::vector<float> sharedBuffer;
 std::mutex bufferMutex;
+
 AudioProcessor* audioProcessor;
 std::mutex audioProcessorMutex;
+
 Config config;
 
 
@@ -192,11 +199,18 @@ bool setAudioDeviceVolume(UInt32 deviceID, float volume) {
     return true;
 }
 
-
-void cleanup() {
+void cleanup(int signum) {
     float driverVolume = getAudioDeviceVolume(driverID);
     setAudioDeviceVolume(defaultDeviceID, driverVolume);
     setDefaultOutputDevice(defaultDeviceID);
+
+    AudioDeviceStop(driverID, inputIOProcId);
+    AudioDeviceStop(defaultDeviceID, outputIOProcID);
+
+    AudioDeviceDestroyIOProcID(driverID, inputIOProcId);
+    AudioDeviceDestroyIOProcID(defaultDeviceID, outputIOProcID);
+
+    std::exit(signum);
 }
 
 OSStatus driverIOProc(
@@ -208,17 +222,21 @@ OSStatus driverIOProc(
         const AudioTimeStamp* inOutputTime,
         void* inClientData
 ) {
-    bufferMutex.lock();
     for (int i = 0; i < inInputData->mNumberBuffers; ++i) {
         AudioBuffer buffer = inInputData->mBuffers[i];
         float* audioData = (float*)buffer.mData;
         UInt32 numSamples = buffer.mDataByteSize / sizeof(float);
 
+        bufferMutex.lock();
         for (int j = 0; j < numSamples; ++j) {
             sharedBuffer.push_back(audioData[j]);
         }
+
+        if (sharedBuffer.size() == 8192) {
+            audioProcessor->process(sharedBuffer);
+        }
+        bufferMutex.unlock();
     }
-    bufferMutex.unlock();
 
     return noErr;
 }
@@ -232,26 +250,27 @@ OSStatus defaultDeviceIOProc(
         const AudioTimeStamp* inOutputTime,
         void* inClientData
 ) {
-    bufferMutex.lock();
     for (UInt32 i = 0; i < outOutputData->mNumberBuffers; ++i) {
         AudioBuffer outBuffer = outOutputData->mBuffers[i];
         float* outputData = (float*)outBuffer.mData;
         UInt32 numSamples = outBuffer.mDataByteSize / sizeof(float);
 
-        audioProcessor->process(sharedBuffer);
-
+        bufferMutex.lock();
         for (int j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
             outputData[j] = sharedBuffer.front();
             sharedBuffer.erase(sharedBuffer.begin());
         }
+        bufferMutex.unlock();
     }
-    bufferMutex.unlock();
 
     return noErr;
 }
 
 // Separate main for win and mac
 int main() {
+    std::signal(SIGINT, cleanup);
+    std::signal(SIGTERM, cleanup);
+
     config.loadConfig();
     audioProcessor = new AudioProcessor(config);
 
@@ -280,9 +299,6 @@ int main() {
     }
 
     // Create audio device processes
-    AudioDeviceIOProcID inputIOProcId;
-    AudioDeviceIOProcID outputIOProcID;
-
     AudioDeviceCreateIOProcID(driverID, driverIOProc, nullptr, &inputIOProcId);
     AudioDeviceCreateIOProcID(defaultDeviceID, defaultDeviceIOProc, nullptr, &outputIOProcID);
 
@@ -298,17 +314,7 @@ int main() {
             audioProcessor = updated;
             audioProcessorMutex.unlock();
         }
-        usleep(250);
+        usleep(250000);
     }
-
-    // Cleanup: Stop and release resources
-    AudioDeviceStop(driverID, inputIOProcId);
-    AudioDeviceStop(defaultDeviceID, outputIOProcID);
-
-    AudioDeviceDestroyIOProcID(driverID, inputIOProcId);
-    AudioDeviceDestroyIOProcID(defaultDeviceID, outputIOProcID);
-
-    // Return to default output device and original volume
-    ::atexit(cleanup);
 }
 
