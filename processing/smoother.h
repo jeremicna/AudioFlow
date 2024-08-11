@@ -12,6 +12,8 @@ public:
 
     float currentValue();
     float currentValueNoChange();
+
+    int getRemaining();
 private:
     float current;
     float increment;

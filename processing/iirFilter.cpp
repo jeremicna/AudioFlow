@@ -7,15 +7,14 @@
 IIRFilter::IIRFilter(float f, float q, float g, float sampleRate)
     : f(Smoother(f, f, 0)), q(Smoother(q, q, 0)), g(Smoother(g, g, 0)), sampleRate(Smoother(sampleRate, sampleRate, 0)) {
 
-    calculatePeakFilter();
+    calculatePeakFilter(a_coeffs, b_coeffs);
     state = std::vector<double>(a_coeffs.size(), 0.0);
 }
 
-
 void IIRFilter::process(std::vector<float>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
-        if (n < 256) {
-            calculatePeakFilter();
+        if (f.getRemaining() > 0 || q.getRemaining() > 0 || g.getRemaining() > 0) {
+            calculatePeakFilter(a_coeffs, b_coeffs);
         }
 
         double w0 = input[n];
@@ -38,7 +37,7 @@ void IIRFilter::process(std::vector<float>& input) {
     }
 }
 
-void IIRFilter::calculatePeakFilter() {
+void IIRFilter::calculatePeakFilter(std::vector<double>& a, std::vector<double>& b) {
     double A = pow(10.0, g.currentValue() / 40.0);
     double omega = 2.0 * M_PI * f.currentValue() / sampleRate.currentValue();
     double alpha = sin(omega) / (2.0 * q.currentValue());
@@ -50,8 +49,8 @@ void IIRFilter::calculatePeakFilter() {
     double b1 = -2.0 * cos(omega);
     double b2 = 1.0 - alpha * A;
 
-    a_coeffs = {a0, a1, a2};
-    b_coeffs = {b0, b1, b2};
+    a = {a0, a1, a2};
+    b = {b0, b1, b2};
 
     for (auto& coeff : a_coeffs) {
         coeff /= a0;

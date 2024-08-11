@@ -16,7 +16,7 @@ public:
 
     void process(std::vector<float>& input);
 
-    void calculatePeakFilter();
+    void calculatePeakFilter(std::vector<double>& a_coeffs, std::vector<double>& b_coeffs);
 
     float getF();
     void setF(float gain);
@@ -31,7 +31,6 @@ private:
     Smoother q;
     Smoother g;
     Smoother sampleRate;
-
     std::vector<double> a_coeffs;
     std::vector<double> b_coeffs;
     std::vector<double> state;

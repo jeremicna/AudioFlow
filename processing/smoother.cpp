@@ -22,3 +22,7 @@ float Smoother::currentValue() {
 
     return current;
 }
+
+int Smoother::getRemaining() {
+    return remaining;
+}
