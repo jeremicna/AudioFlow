@@ -14,14 +14,29 @@ const writeConfigToFile = function() {
 
 // Load config values and set event listeners for preamp
 const configPreAmpValue = configJSON['amplifier']['g'];
-const preAmpSlider = document.getElementById('preampSlider');
-preAmpSlider.value = configPreAmpValue;
-preAmpSlider.oninput = function () {
+const preampSlider = document.getElementById('preampSlider');
+const preampGainBox = document.getElementById('preampGain');
+preampSlider.value = configPreAmpValue;
+preampGainBox.value = configPreAmpValue;
+preampSlider.oninput = function () {
+    preampGainBox.value = this.value;
     configJSON['amplifier']['g'] = parseFloat(this.value);
     writeConfigToFile();
 };
 
-
+preampGainBox.onkeydown = function(e) {
+    if (e.keyCode == 13) {
+        preampGainBox.blur();
+        if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
+            this.value = configGValue;
+            preampSlider.value = configGValue
+        } else {
+            preampSlider.value = this.value;
+            configJSON['amplifier']['g'] = parseFloat(this.value);
+            writeConfigToFile();
+        }
+    }
+}
 
 // Load config values and set event listeners for all equalizer bands
 const sliderContainers = document.getElementsByClassName('eqSliderContainer');
@@ -47,10 +62,12 @@ for (let i = 0; i < sliderContainers.length; i++) {
     fBox.onkeydown = function(e) {
         if (e.keyCode == 13) {
             fBox.blur();
-            if (isNaN(parseFloat(this.value)) || this.value < 0 || this.value > 16000) {
+            if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 16000) {
                 this.value = configFValue;
             } else {
-                configJSON['equalizer']['f'][i] = parseFloat(this.value);
+                const entry = parseFloat(this.value);
+                fBox.value = entry;
+                configJSON['equalizer']['f'][i] = entry;
                 writeConfigToFile();
             }
         }
@@ -59,10 +76,12 @@ for (let i = 0; i < sliderContainers.length; i++) {
     qBox.onkeydown = function(e) {
         if (e.keyCode == 13) {
             qBox.blur();
-            if (isNaN(parseFloat(this.value)) || this.value < 0 || this.value > 10) {
+            if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 10) {
                 this.value = configQValue;
             } else {
-                configJSON['equalizer']['q'][i] = parseFloat(this.value);
+                const entry = parseFloat(this.value);
+                qBox.value = entry;
+                configJSON['equalizer']['q'][i] = entry;
                 writeConfigToFile();
             }
         }
@@ -73,18 +92,43 @@ for (let i = 0; i < sliderContainers.length; i++) {
             gainBox.blur();
             if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
                 this.value = configGValue;
-                slider.value = configGValue
+                slider.value = configGValue;
             } else {
-                slider.value = this.value;
-                configJSON['equalizer']['g'][i] = parseFloat(this.value);
+                const entry = parseFloat(this.value);
+                gainBox.value = entry;
+                slider.value = entry;
+                configJSON['equalizer']['g'][i] = entry;
                 writeConfigToFile();
             }
         }
     }
 };
 
-// IMPLEMENT: FIX SLIDER SPACING
-// IMPLEMENT: DB BOX FOR PREAMP
-// IMPLEMENT: REVERB UI AND OTHER STUFF
-// IMPLEMENT: TOGGLES
+// Load config values and set event listeners for reverb unit
+const configDrywetValue = configJSON['reverb']['dw'] * 100;
+const drywetSlider = document.getElementById('drywetSlider');
+const drywetBox = document.getElementById('drywetBox');
+drywetSlider.value = configDrywetValue;
+drywetBox.value = configDrywetValue;
+drywetSlider.oninput = function () {
+    drywetBox.value = this.value;
+    configJSON['reverb']['dw'] = parseFloat(this.value) / 100;
+    writeConfigToFile();
+};
+
+drywetBox.onkeydown = function(e) {
+    if (e.keyCode == 13) {
+        drywetBox.blur();
+        if (isNaN(parseFloat(this.value)) || this.value < 0 || this.value > 100) {
+            this.value = configDrywetValue;
+            drywetSlider.value = configDrywetValue;
+        } else {
+            const entry = parseFloat(this.value);
+            drywetBox.value = entry;
+            drywetSlider.value = entry;
+            configJSON['reverb']['dw'] = entry / 100;
+            writeConfigToFile();
+        }
+    }
+}
 

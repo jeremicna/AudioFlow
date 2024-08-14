@@ -562,114 +562,279 @@ video {
   position: relative;
 }
 
-.-inset-x-\[8px\] {
-  left: -8px;
-  right: -8px;
+.-inset-x-\[-2px\] {
+  left: 2px;
+  right: 2px;
 }
 
-.inset-x-\[103px\] {
-  left: 103px;
-  right: 103px;
+.inset-x-\[142px\] {
+  left: 142px;
+  right: 142px;
 }
 
-.inset-x-\[129px\] {
-  left: 129px;
-  right: 129px;
+.inset-x-\[146px\] {
+  left: 146px;
+  right: 146px;
 }
 
-.inset-x-\[140px\] {
-  left: 140px;
-  right: 140px;
+.inset-x-\[190px\] {
+  left: 190px;
+  right: 190px;
 }
 
-.inset-x-\[166px\] {
-  left: 166px;
-  right: 166px;
+.inset-x-\[194px\] {
+  left: 194px;
+  right: 194px;
 }
 
-.inset-x-\[177px\] {
-  left: 177px;
-  right: 177px;
+.inset-x-\[238px\] {
+  left: 238px;
+  right: 238px;
 }
 
-.inset-x-\[203px\] {
-  left: 203px;
-  right: 203px;
+.inset-x-\[242px\] {
+  left: 242px;
+  right: 242px;
 }
 
-.inset-x-\[214px\] {
-  left: 214px;
-  right: 214px;
+.inset-x-\[286px\] {
+  left: 286px;
+  right: 286px;
 }
 
-.inset-x-\[240px\] {
-  left: 240px;
-  right: 240px;
+.inset-x-\[290px\] {
+  left: 290px;
+  right: 290px;
 }
 
-.inset-x-\[251px\] {
-  left: 251px;
-  right: 251px;
+.inset-x-\[334px\] {
+  left: 334px;
+  right: 334px;
 }
 
-.inset-x-\[277px\] {
-  left: 277px;
-  right: 277px;
+.inset-x-\[338px\] {
+  left: 338px;
+  right: 338px;
 }
 
-.inset-x-\[288px\] {
-  left: 288px;
-  right: 288px;
+.inset-x-\[382px\] {
+  left: 382px;
+  right: 382px;
 }
 
-.inset-x-\[29px\] {
-  left: 29px;
-  right: 29px;
+.inset-x-\[386px\] {
+  left: 386px;
+  right: 386px;
 }
 
-.inset-x-\[314px\] {
-  left: 314px;
-  right: 314px;
+.inset-x-\[430px\] {
+  left: 430px;
+  right: 430px;
 }
 
-.inset-x-\[351px\] {
-  left: 351px;
-  right: 351px;
+.inset-x-\[434px\] {
+  left: 434px;
+  right: 434px;
 }
 
-.inset-x-\[388px\] {
-  left: 388px;
-  right: 388px;
+.inset-x-\[478px\] {
+  left: 478px;
+  right: 478px;
 }
 
-.inset-x-\[66px\] {
-  left: 66px;
-  right: 66px;
+.inset-x-\[50px\] {
+  left: 50px;
+  right: 50px;
 }
 
-.inset-x-\[92px\] {
-  left: 92px;
-  right: 92px;
+.inset-x-\[524px\] {
+  left: 524px;
+  right: 524px;
 }
 
-.inset-y-\[170px\] {
-  top: 170px;
-  bottom: 170px;
+.inset-x-\[526px\] {
+  left: 526px;
+  right: 526px;
 }
 
-.inset-y-\[296px\] {
-  top: 296px;
-  bottom: 296px;
+.inset-x-\[94px\] {
+  left: 94px;
+  right: 94px;
 }
 
-.inset-y-\[422px\] {
-  top: 422px;
-  bottom: 422px;
+.inset-x-\[98px\] {
+  left: 98px;
+  right: 98px;
+}
+
+.inset-y-\[178px\] {
+  top: 178px;
+  bottom: 178px;
+}
+
+.inset-y-\[306px\] {
+  top: 306px;
+  bottom: 306px;
 }
 
 .inset-y-\[442px\] {
   top: 442px;
   bottom: 442px;
+}
+
+.inset-y-\[462px\] {
+  top: 462px;
+  bottom: 462px;
+}
+
+.inset-y-\[76px\] {
+  top: 76px;
+  bottom: 76px;
+}
+
+.inset-y-\[500px\] {
+  top: 500px;
+  bottom: 500px;
+}
+
+.inset-y-\[520px\] {
+  top: 520px;
+  bottom: 520px;
+}
+
+.inset-y-\[560px\] {
+  top: 560px;
+  bottom: 560px;
+}
+
+.inset-y-\[564px\] {
+  top: 564px;
+  bottom: 564px;
+}
+
+.inset-y-\[568px\] {
+  top: 568px;
+  bottom: 568px;
+}
+
+.inset-y-\[490px\] {
+  top: 490px;
+  bottom: 490px;
+}
+
+.inset-y-\[512px\] {
+  top: 512px;
+  bottom: 512px;
+}
+
+.inset-y-\[524px\] {
+  top: 524px;
+  bottom: 524px;
+}
+
+.inset-y-\[540px\] {
+  top: 540px;
+  bottom: 540px;
+}
+
+.inset-y-\[536px\] {
+  top: 536px;
+  bottom: 536px;
+}
+
+.inset-y-\[534px\] {
+  top: 534px;
+  bottom: 534px;
+}
+
+.inset-y-\[514px\] {
+  top: 514px;
+  bottom: 514px;
+}
+
+.inset-y-\[378px\] {
+  top: 378px;
+  bottom: 378px;
+}
+
+.inset-y-\[250px\] {
+  top: 250px;
+  bottom: 250px;
+}
+
+.inset-y-\[148px\] {
+  top: 148px;
+  bottom: 148px;
+}
+
+.inset-y-\[144px\] {
+  top: 144px;
+  bottom: 144px;
+}
+
+.inset-y-\[640px\] {
+  top: 640px;
+  bottom: 640px;
+}
+
+.inset-y-\[246px\] {
+  top: 246px;
+  bottom: 246px;
+}
+
+.inset-y-\[510px\] {
+  top: 510px;
+  bottom: 510px;
+}
+
+.inset-y-\[530px\] {
+  top: 530px;
+  bottom: 530px;
+}
+
+.inset-y-\[374px\] {
+  top: 374px;
+  bottom: 374px;
+}
+
+.inset-y-\[636px\] {
+  top: 636px;
+  bottom: 636px;
+}
+
+.inset-y-\[660px\] {
+  top: 660px;
+  bottom: 660px;
+}
+
+.inset-y-\[680px\] {
+  top: 680px;
+  bottom: 680px;
+}
+
+.inset-y-\[720px\] {
+  top: 720px;
+  bottom: 720px;
+}
+
+.inset-y-\[712px\] {
+  top: 712px;
+  bottom: 712px;
+}
+
+.inset-y-\[708px\] {
+  top: 708px;
+  bottom: 708px;
+}
+
+.inset-y-\[700px\] {
+  top: 700px;
+  bottom: 700px;
+}
+
+.inset-y-\[704px\] {
+  top: 704px;
+  bottom: 704px;
 }
 
 .ml-3 {
@@ -688,16 +853,56 @@ video {
   height: 1rem;
 }
 
+.h-5 {
+  height: 1.25rem;
+}
+
 .h-6 {
   height: 1.5rem;
 }
 
-.h-\[232px\] {
-  height: 232px;
+.h-\[200px\] {
+  height: 200px;
 }
 
-.h-\[265px\] {
-  height: 265px;
+.h-\[238px\] {
+  height: 238px;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.h-7 {
+  height: 1.75rem;
+}
+
+.h-\[180px\] {
+  height: 180px;
+}
+
+.h-\[172px\] {
+  height: 172px;
+}
+
+.h-\[192px\] {
+  height: 192px;
+}
+
+.h-\[198px\] {
+  height: 198px;
+}
+
+.h-\[196px\] {
+  height: 196px;
+}
+
+.h-\[194px\] {
+  height: 194px;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .w-12 {
@@ -706,10 +911,6 @@ video {
 
 .w-56 {
   width: 14rem;
-}
-
-.w-6 {
-  width: 1.5rem;
 }
 
 .w-full {
@@ -746,12 +947,6 @@ video {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.space-y-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -839,6 +1034,22 @@ video {
   padding-top: 3px;
 }
 
+.pt-\[10px\] {
+  padding-top: 10px;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pl-1 {
+  padding-left: 0.25rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -860,6 +1071,11 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-bold {
@@ -932,10 +1148,21 @@ video {
   border-radius: 6px;
 }
 
+#drywetSlider {
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+#drywetSlider::-webkit-slider-thumb {
+  width: 24px;
+  height: 100%;
+  background-color: #3730a3;
+  border-radius: 6px;
+}
+
 .eqSliderContainer input[type="range"] {
   -webkit-appearance: none;
   transform: rotate(270deg);
-  /* No need for -webkit-prefix here */
   cursor: pointer;
 }
 

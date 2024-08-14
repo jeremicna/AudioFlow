@@ -14,9 +14,22 @@
     border-radius: 6px;
 }
 
+#drywetSlider {
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+#drywetSlider::-webkit-slider-thumb {
+    width: 24px;
+    height: 100%;
+    background-color: #3730a3;
+    border-radius: 6px;
+}
+
+
 .eqSliderContainer input[type="range"] {
     -webkit-appearance: none;
-    transform: rotate(270deg); /* No need for -webkit-prefix here */
+    transform: rotate(270deg);
     cursor: pointer;
 }
 
