@@ -1,0 +1,2 @@
+lib/* linguist-vendored
+ui/src/styles/output.css -linguist-generated
