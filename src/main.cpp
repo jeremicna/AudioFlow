@@ -22,6 +22,16 @@ std::mutex audioProcessorMutex;
 Config config;
 
 
+void updateConfig() {
+    bool upToDate = config.loadConfig();
+    if (!upToDate || audioProcessor == nullptr) {
+        AudioProcessor* updated = new AudioProcessor(config, audioProcessor);
+        audioProcessorMutex.lock();
+        audioProcessor = updated;
+        audioProcessorMutex.unlock();
+    }
+}
+
 std::map<UInt32 , std::string> getAudioDevices() {
     AudioObjectPropertyAddress propAddress;
     propAddress.mSelector = kAudioHardwarePropertyDevices;
@@ -227,6 +237,8 @@ OSStatus driverIOProc(
         float* audioData = (float*)buffer.mData;
         UInt32 numSamples = buffer.mDataByteSize / sizeof(float);
 
+        updateConfig();
+
         bufferMutex.lock();
         for (int j = 0; j < numSamples; ++j) {
             sharedBuffer.push_back(audioData[j]);
@@ -307,14 +319,8 @@ int main() {
     AudioDeviceStart(defaultDeviceID, outputIOProcID);
 
     while (true) {
-        bool upToDate = config.loadConfig();
-        if (!upToDate || audioProcessor == nullptr) {
-            AudioProcessor* updated = new AudioProcessor(config, audioProcessor);
-            audioProcessorMutex.lock();
-            audioProcessor = updated;
-            audioProcessorMutex.unlock();
-        }
-        usleep(250000);
+
+        usleep(250);
     }
 }
 
