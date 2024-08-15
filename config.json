@@ -1,8 +1,10 @@
 {
   "amplifier": {
-    "g": -15
+    "toggle": false,
+    "g": 0
   },
   "equalizer": {
+    "toggle": false,
     "f": [
       32,
       64,
@@ -28,10 +30,10 @@
       1.41
     ],
     "g": [
-      15,
+      20,
       12,
-      8,
-      3,
+      6,
+      2,
       0,
       0,
       0,
@@ -41,6 +43,7 @@
     ]
   },
   "reverb": {
+    "toggle": false,
     "dw": 0.5,
     "ir": "../assets/ir/ir.wav"
   }

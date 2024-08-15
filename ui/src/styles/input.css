@@ -8,22 +8,29 @@
 }
 
 #preampSlider::-webkit-slider-thumb {
-    width: 24px;
-    height: 100%;
-    background-color: #3730a3;
-    border-radius: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.5rem;
+    height: 1rem;
+    background: rgb(55 48 163);
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 #drywetSlider {
     -webkit-appearance: none;
     cursor: pointer;
+
 }
 
 #drywetSlider::-webkit-slider-thumb {
-    width: 24px;
-    height: 100%;
-    background-color: #3730a3;
-    border-radius: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.5rem;
+    height: 1rem;
+    background: rgb(55 48 163);
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 
@@ -34,10 +41,13 @@
 }
 
 .eqSliderContainer input[type="range"]::-webkit-slider-thumb {
-    width: 24px;
-    height: 100%;
-    background-color: #3730a3;
-    border-radius: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.5rem;
+    height: 1.25rem;
+    background: rgb(55 48 163);
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 input::-webkit-outer-spin-button,

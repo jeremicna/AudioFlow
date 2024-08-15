@@ -2,20 +2,21 @@
 // Created by Jeremi Campagna on 2024-07-16.
 //
 
-#ifndef EQ_CPP_AUDIOPROCESSOR_H
-#define EQ_CPP_AUDIOPROCESSOR_H
+#ifndef EQ_CPP_PROCESSING_H
+#define EQ_CPP_PROCESSING_H
 
 #include <map>
+#include "../processing/audioProcessor.h"
 #include "../processing/amplifier.h"
 #include "../processing/equalizer.h"
 #include "../processing/convolutionReverb.h"
 #include "../fileutils/config.h"
 #include "../fileutils/readIRFile.h"
 
-class AudioProcessor {
+class Processing {
 public:
-    AudioProcessor(Config& config);
-    AudioProcessor(Config& config, AudioProcessor* old);
+    Processing(Config& config);
+    Processing(Config& config, Processing* old);
 
     void process(std::vector<float>& input);
 private:
@@ -26,4 +27,4 @@ private:
 };
 
 
-#endif //EQ_CPP_AUDIOPROCESSOR_H
+#endif //EQ_CPP_PROCESSING_H

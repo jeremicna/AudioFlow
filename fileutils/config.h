@@ -14,12 +14,15 @@ public:
 
     bool loadConfig();
 
+    bool ampToggle;
     float ampGain;
 
+    bool equalizerToggle;
     std::vector<float> equalizerF;
     std::vector<float> equalizerQ;
     std::vector<float> equalizerG;
 
+    bool reverbToggle;
     float reverbDryWet;
     std::string irFilePath;
 };

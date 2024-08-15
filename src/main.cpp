@@ -3,7 +3,7 @@
 #include <iostream>
 #include <map>
 #include <csignal>
-#include "audioProcessor.h"
+#include "processing.h"
 #define driver "HOLLY 2ch"
 
 
@@ -16,7 +16,7 @@ AudioDeviceIOProcID outputIOProcID;
 std::vector<float> sharedBuffer;
 std::mutex bufferMutex;
 
-AudioProcessor* audioProcessor;
+Processing* audioProcessor;
 std::mutex audioProcessorMutex;
 
 Config config;
@@ -25,7 +25,7 @@ Config config;
 void updateConfig() {
     bool upToDate = config.loadConfig();
     if (!upToDate || audioProcessor == nullptr) {
-        AudioProcessor* updated = new AudioProcessor(config, audioProcessor);
+        Processing* updated = new Processing(config, audioProcessor);
         audioProcessorMutex.lock();
         audioProcessor = updated;
         audioProcessorMutex.unlock();
@@ -284,7 +284,7 @@ int main() {
     std::signal(SIGTERM, cleanup);
 
     config.loadConfig();
-    audioProcessor = new AudioProcessor(config);
+    audioProcessor = new Processing(config);
 
     // Get device IDs
     std::map<UInt32, std::string> ad = getAudioDevices();

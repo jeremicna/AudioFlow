@@ -6,10 +6,12 @@
 
 Amplifier::Amplifier(float gain) : gain(Smoother(gain, gain, 0)) {}
 
-void Amplifier::process(std::vector<float> &in) {
-    for (auto& sample : in) {
+void Amplifier::process(std::vector<float> &input) {
+    for (auto& sample : input) {
         double scaleFactor = pow(10, gain.currentValue() / 20);
-        sample *= scaleFactor;
+        double dw = dryWet.currentValue();
+        double scaled = sample * scaleFactor;
+        sample = scaled * dw + sample * (1 - dw);
     }
 }
 

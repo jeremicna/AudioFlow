@@ -10,24 +10,21 @@
 #include <Accelerate/Accelerate.h>
 #include "../fileutils/readIRFile.h"
 #include "smoother.h"
+#include "audioProcessor.h"
 
-class ConvolutionReverb {
+class ConvolutionReverb : public AudioProcessor {
 public:
     std::string path;
 
-    ConvolutionReverb(std::string path, float dryWet);
+    ConvolutionReverb(std::string path, double dryWet);
 
     std::vector<std::complex<float>> fft(const std::vector<float> input, FFTSetup fftSetup);
     std::vector<float> ifft(std::vector<std::complex<float>> input, FFTSetup fftSetup);
 
     void process(std::vector<float>& input);
-
-    float getDryWet();
-    void setDryWet(float dryWet);
 private:
     size_t chunkSize;
     size_t paddedSize;
-    Smoother dryWet;
     std::vector<FFTSetup> fftSetups;
     std::vector<float> overlap;
     std::vector<float> impulseResponse;

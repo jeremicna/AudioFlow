@@ -4,17 +4,17 @@
 
 #include "smoother.h"
 
-Smoother::Smoother(float start, float target, float steps) {
+Smoother::Smoother(double start, double target, double steps) {
     current = start;
     remaining = steps;
     increment = (target - start) / steps;
 }
 
-float Smoother::currentValueNoChange() {
+double Smoother::currentValueNoChange() {
     return current;
 }
 
-float Smoother::currentValue() {
+double Smoother::currentValue() {
     if (remaining > 0) {
         current += increment;
         remaining--;

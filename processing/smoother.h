@@ -8,15 +8,15 @@
 
 class Smoother {
 public:
-    Smoother(float start, float target, float steps);
+    Smoother(double start, double target, double steps);
 
-    float currentValue();
-    float currentValueNoChange();
+    double currentValue();
+    double currentValueNoChange();
 
     int getRemaining();
 private:
-    float current;
-    float increment;
+    double current;
+    double increment;
     int remaining;
 };
 

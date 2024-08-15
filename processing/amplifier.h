@@ -7,12 +7,13 @@
 
 #include <map>
 #include "smoother.h"
+#include "audioProcessor.h"
 
-class Amplifier {
+class Amplifier: public AudioProcessor {
 public:
     Amplifier(float gain);
 
-    void process(std::vector<float>& in);
+    void process(std::vector<float>& input);
 
     float getGain();
     void setGain(float gain);

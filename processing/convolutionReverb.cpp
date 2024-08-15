@@ -5,7 +5,8 @@
 #include "convolutionReverb.h"
 
 
-ConvolutionReverb::ConvolutionReverb(std::string path, float dryWet) : path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
+ConvolutionReverb::ConvolutionReverb(std::string path, double dryWet) : path(path) {
+    setDryWet(dryWet);
     chunkSize = 32768;
     paddedSize = chunkSize * 2;
     impulseResponse = readIRFile(path);
@@ -123,17 +124,9 @@ void ConvolutionReverb::process(std::vector<float>& input) {
     overlap.resize(totalSize);
 
     for (size_t i = 0; i < output.size(); ++i) {
-        float dw = dryWet.currentValue();
+        double dw = dryWet.currentValue();
         output[i] = (output[i] * dw) + (input[i] * (1 - dw));
     }
 
     input = output;
-}
-
-float ConvolutionReverb::getDryWet() {
-    return dryWet.currentValueNoChange();
-}
-
-void ConvolutionReverb::setDryWet(float dryWet) {
-    this->dryWet = Smoother(this->dryWet.currentValueNoChange(), dryWet, 256);
 }

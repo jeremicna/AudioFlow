@@ -12,12 +12,33 @@ const writeConfigToFile = function() {
     fs.renameSync(tempFilePath, configPath);
 }
 
+// Load config values and set event listeners for toggles
+const configEqualizerToggle = configJSON['equalizer']['toggle'];
+const configReverbToggle = configJSON['reverb']['toggle'];
+const equalizerToggle = document.getElementById('equalizerToggle');
+const reverbToggle = document.getElementById('reverbToggle');
+equalizerToggle.checked = configEqualizerToggle;
+reverbToggle.checked = configReverbToggle;
+equalizerToggle.oninput = function () {
+    equalizerToggle.checked = this.checked;
+    configJSON['amplifier']['toggle'] = this.checked;
+    configJSON['equalizer']['toggle'] = this.checked;
+    writeConfigToFile();
+}
+
+reverbToggle.oninput = function () {
+    equalizerToggle.value = this.checked;
+    configJSON['reverb']['toggle'] = this.checked;
+    writeConfigToFile();
+}
+
+
 // Load config values and set event listeners for preamp
-const configPreAmpValue = configJSON['amplifier']['g'];
+const configPreampValue = configJSON['amplifier']['g'];
 const preampSlider = document.getElementById('preampSlider');
 const preampGainBox = document.getElementById('preampGain');
-preampSlider.value = configPreAmpValue;
-preampGainBox.value = configPreAmpValue;
+preampSlider.value = configPreampValue;
+preampGainBox.value = configPreampValue;
 preampSlider.oninput = function () {
     preampGainBox.value = this.value;
     configJSON['amplifier']['g'] = parseFloat(this.value);

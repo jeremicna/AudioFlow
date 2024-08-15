@@ -20,7 +20,7 @@ process.on('error', (error) => {
 const createWindow = () => {
     win = new BrowserWindow({
         width: 600,
-        height: 820,
+        height: 816,
         backGroundColor: '#0F172A',
         show: false,
         resizable: false,

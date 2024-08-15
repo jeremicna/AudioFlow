@@ -7,8 +7,9 @@
 
 #include <map>
 #include "iirFilter.h"
+#include "audioProcessor.h"
 
-class Equalizer {
+class Equalizer: public AudioProcessor {
 public:
     Equalizer(std::vector<float>& fVector, std::vector<float>& qVector, std::vector<float>& gVector, float sampleRate);
 

@@ -10,12 +10,13 @@ find_library(Accelerate Accelerate)
 
 set(SOURCES
         src/main.cpp
+        src/processing.cpp
         processing/amplifier.cpp
-        src/audioProcessor.cpp
         processing/iirFilter.cpp
         processing/equalizer.cpp
         processing/convolutionReverb.cpp
         processing/smoother.cpp
+        processing/audioProcessor.cpp
         fileutils/readIRFile.cpp
         fileutils/config.cpp
         )
