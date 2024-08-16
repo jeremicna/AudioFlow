@@ -22,7 +22,7 @@ void Equalizer::process(std::vector<float>& input) {
         filter.process(processed);
     }
     for (size_t i = 0; i < input.size(); ++i) {
-        double dw = dryWet.currentValue();
+        double dw = mix.currentValue();
         input[i] = (processed[i] * dw) + (input[i] * (1 - dw));
     }
 }

@@ -21,10 +21,14 @@ public:
     std::vector<std::complex<float>> fft(const std::vector<float> input, FFTSetup fftSetup);
     std::vector<float> ifft(std::vector<std::complex<float>> input, FFTSetup fftSetup);
 
+    double getDryWet();
+    void setDryWet(double dryWet);
+
     void process(std::vector<float>& input);
 private:
     size_t chunkSize;
     size_t paddedSize;
+    Smoother dryWet;
     std::vector<FFTSetup> fftSetups;
     std::vector<float> overlap;
     std::vector<float> impulseResponse;

@@ -4,14 +4,15 @@
 
 #include "audioProcessor.h"
 
-AudioProcessor::AudioProcessor() : dryWet(Smoother(1, 1, 0)), toggle(true) {
+// MAKE IT SO INIT TOGGLE AND DRY WET CORRESPONDS TO CONFIG
+AudioProcessor::AudioProcessor() : mix(Smoother(0, 0, 0)), toggle(false) {
 };
 
 void AudioProcessor::setToggle(bool toggle) {
     if (toggle) {
-        setDryWet(1);
+        setMix(1);
     } else {
-        setDryWet(0);
+        setMix(0);
     }
     this->toggle = toggle;
 }
@@ -20,11 +21,11 @@ bool AudioProcessor::getToggle() {
     return toggle;
 }
 
-double AudioProcessor::getDryWet() {
-    return dryWet.currentValueNoChange();
+double AudioProcessor::getMix() {
+    return mix.currentValueNoChange();
 }
 
-void AudioProcessor::setDryWet(double dryWet) {
-    this->dryWet = Smoother(this->dryWet.currentValueNoChange(), dryWet, 256);
+void AudioProcessor::setMix(double mix) {
+    this->mix = Smoother(this->mix.currentValueNoChange(), mix, 256);
 }
 

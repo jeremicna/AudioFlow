@@ -10,7 +10,12 @@ Processing::Processing(Config& config) :
     amplifier(*new Amplifier(config.ampGain)),
     equalizer(*new Equalizer(config.equalizerF, config.equalizerQ, config.equalizerG, 48000)),
     convolutionReverb(*new ConvolutionReverb(config.irFilePath, config.reverbDryWet))
-{}
+{
+    amplifier.setToggle(config.ampToggle);
+    equalizer.setToggle(config.equalizerToggle);
+    convolutionReverb.setToggle(config.reverbToggle);
+
+}
 
 Processing::Processing(Config& config, Processing* old) :
         config(config),

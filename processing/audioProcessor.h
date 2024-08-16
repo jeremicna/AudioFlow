@@ -14,13 +14,13 @@ public:
 
     void process(std::vector<float>& input);
 
-    double getDryWet();
-    void setDryWet(double dryWet);
+    double getMix();
+    void setMix(double mix);
 
     void setToggle(bool toggle);
     bool getToggle();
 protected:
-    Smoother dryWet;
+    Smoother mix;
 
 private:
     bool toggle;
