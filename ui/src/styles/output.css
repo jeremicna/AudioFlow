@@ -697,8 +697,16 @@ video {
   bottom: 704px;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .ml-3 {
   margin-left: 0.75rem;
+}
+
+.mr-12 {
+  margin-right: 3rem;
 }
 
 .flex {
@@ -745,12 +753,20 @@ video {
   width: 14rem;
 }
 
+.w-8 {
+  width: 2rem;
+}
+
 .w-full {
   width: 100%;
 }
 
 .flex-shrink-0 {
   flex-shrink: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .select-none {
@@ -906,6 +922,10 @@ video {
   font-weight: 500;
 }
 
+.font-normal {
+  font-weight: 400;
+}
+
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity));
@@ -1012,9 +1032,19 @@ input[type="number"]:focus {
   outline: none;
 }
 
+.after\:h-3::after {
+  content: var(--tw-content);
+  height: 0.75rem;
+}
+
 .after\:h-4::after {
   content: var(--tw-content);
   height: 1rem;
+}
+
+.after\:w-3::after {
+  content: var(--tw-content);
+  width: 0.75rem;
 }
 
 .after\:w-4::after {
@@ -1048,6 +1078,12 @@ input[type="number"]:focus {
 .peer:checked ~ .peer-checked\:bg-indigo-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(55 48 163 / var(--tw-bg-opacity));
+}
+
+.peer:checked ~ .peer-checked\:after\:translate-x-3::after {
+  content: var(--tw-content);
+  --tw-translate-x: 0.75rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .peer:checked ~ .peer-checked\:after\:translate-x-6::after {

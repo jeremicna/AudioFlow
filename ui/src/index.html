@@ -13,19 +13,26 @@
         <div class="font-sans font-bold text-2xl text-slate-400">Equalizer</div>
         <label class="flex justify-between items-center">
             <input id="equalizerToggle" type="checkbox" class="appearance-none peer">
-            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6"></span>
+            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6 cursor-pointer"></span>
         </label>
     </div>
     <div id="presets" class="">
         <div class="font-sans font-medium text-base text-slate-400 py-1">Preset</div>
-        <select class="outline outline-2 outline-slate-900 w-full h-7 bg-slate-800 rounded-md font-sans font-medium text-sm text-slate-400 py-1 pl-1" id="selectPreset">
+        <select class="outline outline-2 outline-slate-900 w-full h-7 bg-slate-800 rounded-md font-sans font-medium text-sm text-slate-400 py-1 pl-1 cursor-pointer" id="selectPreset">
             <option value="custom">Custom</option>
             <option value="hip-hop">Hip-Hop</option>
         </select>
     </div>
     <div id="preamp" class="">
         <input id="preampGain" type="number" class="absolute text-center w-10 h-4 bg-slate-900 rounded-sm font-sans font-medium text-xs text-slate-400 inset-x-[524px] inset-y-[144px]">
-        <div class="font-sans font-medium text-base text-slate-400 py-1">Preamplification</div>
+        <div class="py-1 flex items-center justify-between">
+            <div class="font-sans font-medium text-base text-slate-400 ">Preamplification</div>
+            <label class="flex items-center mr-12">
+                <label for="autoPreampToggle" class="font-sans font-normal text-sm text-slate-400">Auto</label>
+                <input id="autoPreampToggle" type="checkbox" class="appearance-none peer">
+                <span class="outline outline-slate-800 w-8 h-4 flex items-center flex-shrink-0 ml-2 p-1 bg-slate-800 rounded-full after:w-3 after:h-3 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-3 cursor-pointer"></span>
+            </label>
+        </div>
         <input id="preampSlider" type="range" step="1" min="-30" max="30" value="0" class="outline outline-2 outline-slate-900 w-full h-5 bg-slate-800 rounded-md">
         <div id="preampDecibalLabels" class="flex justify-between font-sans font-medium text-xs text-slate-400">
             <label>-30 dB</label>
@@ -117,12 +124,12 @@
         <div class="font-sans font-bold text-2xl text-slate-400">Reverb</div>
         <label class="flex justify-between items-center">
             <input id="reverbToggle" type="checkbox" class="appearance-none peer">
-            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6"></span>
+            <span class="outline outline-2 outline-offset-2 outline-slate-800 w-12 h-6 flex items-center flex-shrink-0 ml-3 p-1 bg-slate-800 rounded-full after:w-4 after:h-4 after:bg-slate-400 after:rounded-full after:shadow-md peer-checked:bg-indigo-800 duration-200 ease-in-out after:duration-200 peer-checked:after:translate-x-6 cursor-pointer"></span>
         </label>
     </div>
     <div id="spaces" class="">
         <div class="font-sans font-medium text-base text-slate-400 py-1">Space</div>
-        <select class="outline outline-2 outline-slate-900 w-full h-7 bg-slate-800 rounded-md font-sans font-medium text-sm text-slate-400 py-1 pl-1" id="selectSpace">
+        <select class="outline outline-2 outline-slate-900 w-full h-7 bg-slate-800 rounded-md font-sans font-medium text-sm text-slate-400 py-1 pl-1 cursor-pointer" id="selectSpace">
             <option value="cathedral">Cathedral</option>
             <option value="large hall">Large Hall</option>
         </select>

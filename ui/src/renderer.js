@@ -13,12 +13,23 @@ const writeConfigToFile = function() {
 }
 
 // Load config values and set event listeners for toggles
+const autoPreampToggle = document.getElementById('autoPreampToggle');
 const configEqualizerToggle = configJSON['equalizer']['toggle'];
 const configReverbToggle = configJSON['reverb']['toggle'];
 const equalizerToggle = document.getElementById('equalizerToggle');
 const reverbToggle = document.getElementById('reverbToggle');
 equalizerToggle.checked = configEqualizerToggle;
 reverbToggle.checked = configReverbToggle;
+autoPreampToggle.oninput = function () {
+    if (autoPreampToggle.checked) {
+        const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
+        preampSlider.value = preamp;
+        preampGainBox.value = preamp;
+        configJSON['amplifier']['g'] = preamp;
+        writeConfigToFile();
+    }
+}
+
 equalizerToggle.oninput = function () {
     equalizerToggle.checked = this.checked;
     configJSON['amplifier']['toggle'] = this.checked;
@@ -40,6 +51,7 @@ const preampGainBox = document.getElementById('preampGain');
 preampSlider.value = configPreampValue;
 preampGainBox.value = configPreampValue;
 preampSlider.oninput = function () {
+    autoPreampToggle.checked = false;
     preampGainBox.value = this.value;
     configJSON['amplifier']['g'] = parseFloat(this.value);
     writeConfigToFile();
@@ -49,11 +61,13 @@ preampGainBox.onkeydown = function(e) {
     if (e.keyCode == 13) {
         preampGainBox.blur();
         if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
-            this.value = configGValue;
-            preampSlider.value = configGValue
+            this.value = configJSON['amplifier']['g'];
+            preampSlider.value = configJSON['amplifier']['g']
         } else {
-            preampSlider.value = this.value;
-            configJSON['amplifier']['g'] = parseFloat(this.value);
+            const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
+            preampSlider.value = preamp;
+            preampGainBox.value = preamp;
+            configJSON['amplifier']['g'] = preamp;
             writeConfigToFile();
         }
     }
@@ -77,6 +91,14 @@ for (let i = 0; i < sliderContainers.length; i++) {
     slider.oninput = function() {
         gainBox.value = this.value;
         configJSON['equalizer']['g'][i] = parseFloat(this.value);
+
+        if (autoPreampToggle.checked) {
+            const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
+            preampSlider.value = preamp;
+            preampGainBox.value = preamp;
+            configJSON['amplifier']['g'] = preamp;
+        }
+
         writeConfigToFile();
     }
 
@@ -84,7 +106,7 @@ for (let i = 0; i < sliderContainers.length; i++) {
         if (e.keyCode == 13) {
             fBox.blur();
             if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 16000) {
-                this.value = configFValue;
+                this.value = configJSON['equalizer']['f'][i];
             } else {
                 const entry = parseFloat(this.value);
                 fBox.value = entry;
@@ -98,7 +120,7 @@ for (let i = 0; i < sliderContainers.length; i++) {
         if (e.keyCode == 13) {
             qBox.blur();
             if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 10) {
-                this.value = configQValue;
+                this.value = configJSON['equalizer']['q'][i];
             } else {
                 const entry = parseFloat(this.value);
                 qBox.value = entry;
@@ -112,13 +134,21 @@ for (let i = 0; i < sliderContainers.length; i++) {
         if (e.keyCode == 13) {
             gainBox.blur();
             if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
-                this.value = configGValue;
-                slider.value = configGValue;
+                this.value = configJSON['equalizer']['g'][i];
+                slider.value = configJSON['equalizer']['g'][i];
             } else {
                 const entry = parseFloat(this.value);
                 gainBox.value = entry;
                 slider.value = entry;
                 configJSON['equalizer']['g'][i] = entry;
+
+                if (autoPreampToggle.checked) {
+                    const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
+                    preampSlider.value = preamp;
+                    preampGainBox.value = preamp;
+                    configJSON['amplifier']['g'] = preamp;
+                }
+
                 writeConfigToFile();
             }
         }
