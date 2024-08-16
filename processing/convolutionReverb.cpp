@@ -5,7 +5,7 @@
 #include "convolutionReverb.h"
 
 
-ConvolutionReverb::ConvolutionReverb(std::string path, double dryWet) : path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
+ConvolutionReverb::ConvolutionReverb(std::string path, double dryWet) : path(path), dryWet(Smoother(0, dryWet, 256)) {
     chunkSize = 32768;
     paddedSize = chunkSize * 2;
     impulseResponse = readIRFile(path);

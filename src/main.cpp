@@ -22,16 +22,6 @@ std::mutex audioProcessorMutex;
 Config config;
 
 
-void updateConfig() {
-    bool upToDate = config.loadConfig();
-    if (!upToDate || audioProcessor == nullptr) {
-        Processing* updated = new Processing(config, audioProcessor);
-        audioProcessorMutex.lock();
-        audioProcessor = updated;
-        audioProcessorMutex.unlock();
-    }
-}
-
 std::map<UInt32 , std::string> getAudioDevices() {
     AudioObjectPropertyAddress propAddress;
     propAddress.mSelector = kAudioHardwarePropertyDevices;
@@ -223,6 +213,16 @@ void cleanup(int signum) {
     std::exit(signum);
 }
 
+void updateConfig() {
+    bool upToDate = config.loadConfig();
+    if (!upToDate || audioProcessor == nullptr) {
+        Processing* updated = new Processing(config, audioProcessor, getAudioDeviceVolume(driverID));
+        audioProcessorMutex.lock();
+        audioProcessor = updated;
+        audioProcessorMutex.unlock();
+    }
+}
+
 OSStatus driverIOProc(
         AudioObjectID inDevice,
         const AudioTimeStamp* inNow,
@@ -283,9 +283,6 @@ int main() {
     std::signal(SIGINT, cleanup);
     std::signal(SIGTERM, cleanup);
 
-    config.loadConfig();
-    audioProcessor = new Processing(config);
-
     // Get device IDs
     std::map<UInt32, std::string> ad = getAudioDevices();
     for (auto const& [key, val] : ad) {
@@ -310,6 +307,9 @@ int main() {
         std::cerr << "Failed to set buffer size for default output device." << std::endl;
     }
 
+    config.loadConfig();
+    audioProcessor = new Processing(config, getAudioDeviceVolume(driverID));
+
     // Create audio device processes
     AudioDeviceCreateIOProcID(driverID, driverIOProc, nullptr, &inputIOProcId);
     AudioDeviceCreateIOProcID(defaultDeviceID, defaultDeviceIOProc, nullptr, &outputIOProcID);
@@ -319,8 +319,7 @@ int main() {
     AudioDeviceStart(defaultDeviceID, outputIOProcID);
 
     while (true) {
-
-        usleep(250);
+        usleep(UINT32_MAX);
     }
 }
 

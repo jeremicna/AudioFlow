@@ -12,11 +12,12 @@
 #include "../processing/convolutionReverb.h"
 #include "../fileutils/config.h"
 #include "../fileutils/readIRFile.h"
+#include "../processing/smoother.h"
 
 class Processing {
 public:
-    Processing(Config& config);
-    Processing(Config& config, Processing* old);
+    Processing(Config& config, double volume);
+    Processing(Config& config, Processing* old, double volume);
 
     void process(std::vector<float>& input);
 private:
@@ -24,6 +25,7 @@ private:
     Amplifier& amplifier;
     Equalizer& equalizer;
     ConvolutionReverb& convolutionReverb;
+    double volume;
 };
 
 

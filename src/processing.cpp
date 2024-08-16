@@ -5,24 +5,28 @@
 #include "processing.h"
 #include <chrono>
 
-Processing::Processing(Config& config) :
+Processing::Processing(Config& config, double volume) :
     config(config),
     amplifier(*new Amplifier(config.ampGain)),
     equalizer(*new Equalizer(config.equalizerF, config.equalizerQ, config.equalizerG, 48000)),
-    convolutionReverb(*new ConvolutionReverb(config.irFilePath, config.reverbDryWet))
+    convolutionReverb(*new ConvolutionReverb(config.irFilePath, config.reverbDryWet)),
+    volume(volume)
 {
     amplifier.setToggle(config.ampToggle);
     equalizer.setToggle(config.equalizerToggle);
     convolutionReverb.setToggle(config.reverbToggle);
-
 }
 
-Processing::Processing(Config& config, Processing* old) :
+Processing::Processing(Config& config, Processing* old, double volume) :
         config(config),
         amplifier(old->amplifier),
         equalizer(old->equalizer),
-        convolutionReverb(old->convolutionReverb)
+        convolutionReverb(old->convolutionReverb),
+        volume(volume)
 {
+    if (old->volume != volume) {
+        amplifier.setVolumeAdjustment(volume / old->volume);
+    }
     if (amplifier.getToggle() != config.ampToggle) {
         amplifier.setToggle(config.ampToggle);
     }

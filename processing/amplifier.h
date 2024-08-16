@@ -17,8 +17,12 @@ public:
 
     float getGain();
     void setGain(float gain);
+
+    float getVolumeAdjustment();
+    void setVolumeAdjustment(float volumeAdjustment);
 private:
     Smoother gain;
+    Smoother volumeAdjustment;
 };
 
 
