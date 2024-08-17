@@ -31,9 +31,9 @@
     ],
     "g": [
       20,
-      13,
-      7,
-      3,
+      12,
+      6,
+      2,
       0,
       0,
       0,
@@ -45,6 +45,6 @@
   "reverb": {
     "toggle": false,
     "dw": 0.5,
-    "ir": "../assets/ir/ir.wav"
+    "ir": "../assets/ir/irc.wav"
   }
 }

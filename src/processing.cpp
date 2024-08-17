@@ -3,7 +3,8 @@
 //
 
 #include "processing.h"
-#include <chrono>
+#include <thread>
+
 
 Processing::Processing(Config& config, double volume) :
     config(config),
@@ -51,7 +52,11 @@ Processing::Processing(Config& config, Processing* old, double volume) :
     if (convolutionReverb.getDryWet() != config.reverbDryWet) {
         convolutionReverb.setDryWet(config.reverbDryWet);
     } else if (convolutionReverb.path != config.irFilePath) {
-        convolutionReverb = ConvolutionReverb(config.reverbToggle, config.irFilePath, config.reverbDryWet);
+        std::thread ([&]() {
+            swapMutex.lock();
+            ConvolutionReverb newReverb = ConvolutionReverb(config.reverbToggle, config.irFilePath, config.reverbDryWet);
+            swapMutex.unlock();
+        }).detach();
     }
 }
 

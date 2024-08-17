@@ -21,11 +21,12 @@ public:
 
     void process(std::vector<float>& input);
 private:
+    double volume;
     Config config;
     Amplifier& amplifier;
     Equalizer& equalizer;
     ConvolutionReverb& convolutionReverb;
-    double volume;
+    std::mutex swapMutex;
 };
 
 
