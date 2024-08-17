@@ -5,7 +5,7 @@
 #include "equalizer.h"
 #include "iostream"
 
-Equalizer::Equalizer(std::vector<float> &fVector, std::vector<float> &qVector, std::vector<float> &gVector, float sampleRate) {
+Equalizer::Equalizer(bool toggle, std::vector<float> &fVector, std::vector<float> &qVector, std::vector<float> &gVector, float sampleRate) : AudioProcessor(toggle) {
     if (fVector.size() != qVector.size() || fVector.size() != gVector.size()) {
         throw std::invalid_argument("Equalizer vectors must be of the same size.");
     }

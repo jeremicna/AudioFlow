@@ -10,7 +10,7 @@
 
 class AudioProcessor {
 public:
-    AudioProcessor();
+    AudioProcessor(bool toggle);
 
     void process(std::vector<float>& input);
 

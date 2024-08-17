@@ -4,7 +4,7 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(float gain) : gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1, 1, 256)) {}
+Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1, 1, 256)) {}
 
 void Amplifier::process(std::vector<float> &input) {
     for (auto& sample : input) {

@@ -5,7 +5,8 @@
 #include "audioProcessor.h"
 
 // MAKE IT SO INIT TOGGLE AND DRY WET CORRESPONDS TO CONFIG
-AudioProcessor::AudioProcessor() : mix(Smoother(0, 0, 0)), toggle(false) {
+AudioProcessor::AudioProcessor(bool toggle) : mix(Smoother(0, 0, 0)) {
+    setToggle(toggle);
 };
 
 void AudioProcessor::setToggle(bool toggle) {

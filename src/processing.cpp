@@ -7,15 +7,10 @@
 
 Processing::Processing(Config& config, double volume) :
     config(config),
-    amplifier(*new Amplifier(config.ampGain)),
-    equalizer(*new Equalizer(config.equalizerF, config.equalizerQ, config.equalizerG, 48000)),
-    convolutionReverb(*new ConvolutionReverb(config.irFilePath, config.reverbDryWet)),
-    volume(volume)
-{
-    amplifier.setToggle(config.ampToggle);
-    equalizer.setToggle(config.equalizerToggle);
-    convolutionReverb.setToggle(config.reverbToggle);
-}
+    amplifier(*new Amplifier(config.ampToggle, config.ampGain)),
+    equalizer(*new Equalizer(config.equalizerToggle, config.equalizerF, config.equalizerQ, config.equalizerG, 48000)),
+    convolutionReverb(*new ConvolutionReverb(config.reverbToggle, config.irFilePath, config.reverbDryWet)),
+    volume(volume) {}
 
 Processing::Processing(Config& config, Processing* old, double volume) :
         config(config),
@@ -56,7 +51,7 @@ Processing::Processing(Config& config, Processing* old, double volume) :
     if (convolutionReverb.getDryWet() != config.reverbDryWet) {
         convolutionReverb.setDryWet(config.reverbDryWet);
     } else if (convolutionReverb.path != config.irFilePath) {
-        convolutionReverb = ConvolutionReverb(config.irFilePath, config.reverbDryWet);
+        convolutionReverb = ConvolutionReverb(config.reverbToggle, config.irFilePath, config.reverbDryWet);
     }
 }
 

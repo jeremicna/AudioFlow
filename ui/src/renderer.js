@@ -1,10 +1,36 @@
 const path = require('path');
 var fs = require('fs');
 
-// Retrieve config
+// Config
 const rootPath = path.resolve(path.dirname(__dirname), '..');
 const configPath = rootPath + '/config.json';
+const assetsPath = rootPath + '/assets';
+const equalizerPresetsPath = assetsPath + '/eq';
+const reverbPresetsPath = assetsPath + '/ir';
 let configJSON = JSON.parse(fs.readFileSync(configPath));
+
+// DOM Elements
+const autoPreampToggle = document.getElementById('autoPreampToggle');
+const equalizerToggle = document.getElementById('equalizerToggle');
+const reverbToggle = document.getElementById('reverbToggle');
+
+const preampSlider = document.getElementById('preampSlider');
+const preampGainBox = document.getElementById('preampGain');
+
+const selectEqualizerPreset = document.getElementById('selectEqualizerPreset')
+const sliderContainers = document.getElementsByClassName('eqSliderContainer');
+let eqSliders = [];
+let eqFBoxes = [];
+let eqQBoxes = [];
+let eqGainBoxes = [];
+
+const selectReverbPreset = document.getElementById('selectReverbPreset')
+const drywetSlider = document.getElementById('drywetSlider');
+const drywetBox = document.getElementById('drywetBox');
+
+// Presets
+let equalizerPresets = {};
+let reverbPresets = {};
 
 const writeConfigToFile = function() {
     const tempFilePath = path.join(rootPath, 'config.tmp');
@@ -12,174 +38,207 @@ const writeConfigToFile = function() {
     fs.renameSync(tempFilePath, configPath);
 }
 
-// Load config values and set event listeners for toggles
-const autoPreampToggle = document.getElementById('autoPreampToggle');
-const configEqualizerToggle = configJSON['equalizer']['toggle'];
-const configReverbToggle = configJSON['reverb']['toggle'];
-const equalizerToggle = document.getElementById('equalizerToggle');
-const reverbToggle = document.getElementById('reverbToggle');
-equalizerToggle.checked = configEqualizerToggle;
-reverbToggle.checked = configReverbToggle;
-autoPreampToggle.oninput = function () {
-    if (autoPreampToggle.checked) {
-        const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
-        preampSlider.value = preamp;
-        preampGainBox.value = preamp;
-        configJSON['amplifier']['g'] = preamp;
-        writeConfigToFile();
+const renderConfig = function () {
+    equalizerToggle.checked = configJSON['equalizer']['toggle'];
+    reverbToggle.checked = configJSON['reverb']['toggle'];
+    preampSlider.value = configJSON['amplifier']['g']
+    preampGainBox.value = configJSON['amplifier']['g'];
+
+    for (let i = 0; i < sliderContainers.length; i++) {
+        eqSliders[i].value = configJSON['equalizer']['g'][i];
+        eqFBoxes[i].value = configJSON['equalizer']['f'][i];
+        eqQBoxes[i].value = configJSON['equalizer']['q'][i];
+        eqGainBoxes[i].value = configJSON['equalizer']['g'][i];
+    }
+
+    drywetSlider.value = Math.round(configJSON['reverb']['dw'] * 100);
+    drywetBox.value = Math.round(configJSON['reverb']['dw'] * 100);
+}
+
+const getEqualizerPresets = function () {
+    const files = fs.readdirSync(equalizerPresetsPath);
+    const filesDict = {};
+
+    for (const file of files) {
+        const presetJSON = JSON.parse(fs.readFileSync(path.join(equalizerPresetsPath, file)));
+        const name = file.split('.')[0];
+        filesDict[name] = presetJSON;
+    }
+
+    return filesDict;
+}
+
+const getReverbPresets = function () {
+    const files = fs.readdirSync(reverbPresetsPath);
+    const filesDict = {};
+
+    for (const file of files) {
+        const name = file.split('.')[0];
+        filesDict[name] = '../assets/ir/' + file;
+    }
+
+    return filesDict;
+}
+
+const loadPresets = function () {
+    equalizerPresets = getEqualizerPresets();
+    reverbPresets = getReverbPresets();
+    for (const key in equalizerPresets) {
+        let node = document.createElement('option');
+        node.value = key;
+        node.text = key.charAt(0).toUpperCase() + key.slice(1);
+        selectEqualizerPreset.appendChild(node);
+    }
+    for (const key in reverbPresets) {
+        let node = document.createElement('option');
+        node.value = key;
+        node.text = key.charAt(0).toUpperCase() + key.slice(1);
+        selectReverbPreset.appendChild(node);
     }
 }
 
+// Set event listeners for presets
+selectEqualizerPreset.addEventListener('change', function () {
+    if (selectEqualizerPreset.value != 'custom') {
+        configJSON['equalizer']['f'] = equalizerPresets[selectEqualizerPreset.value]['f'];
+        configJSON['equalizer']['q'] = equalizerPresets[selectEqualizerPreset.value]['q'];
+        configJSON['equalizer']['g'] = equalizerPresets[selectEqualizerPreset.value]['g'];
+        writeConfigToFile();
+    }
+    renderConfig();
+})
+selectReverbPreset.addEventListener('change', function () {
+    configJSON['reverb']['ir'] = reverbPresets[selectReverbPreset.value];
+    writeConfigToFile();
+    renderConfig();
+})
+
+// Set event listeners for toggles
+autoPreampToggle.oninput = function () {
+    if (autoPreampToggle.checked) {
+        const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
+        configJSON['amplifier']['g'] = preamp;
+        writeConfigToFile();
+    }
+    renderConfig();
+}
+
 equalizerToggle.oninput = function () {
-    equalizerToggle.checked = this.checked;
     configJSON['amplifier']['toggle'] = this.checked;
     configJSON['equalizer']['toggle'] = this.checked;
     writeConfigToFile();
+    renderConfig();
 }
 
 reverbToggle.oninput = function () {
-    equalizerToggle.value = this.checked;
     configJSON['reverb']['toggle'] = this.checked;
     writeConfigToFile();
+    renderConfig();
 }
 
-
 // Load config values and set event listeners for preamp
-const configPreampValue = configJSON['amplifier']['g'];
-const preampSlider = document.getElementById('preampSlider');
-const preampGainBox = document.getElementById('preampGain');
-preampSlider.value = configPreampValue;
-preampGainBox.value = configPreampValue;
 preampSlider.oninput = function () {
     autoPreampToggle.checked = false;
-    preampGainBox.value = this.value;
     configJSON['amplifier']['g'] = parseFloat(this.value);
     writeConfigToFile();
+    renderConfig();
 };
 
 preampGainBox.onkeydown = function(e) {
     if (e.keyCode == 13) {
         preampGainBox.blur();
-        if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
-            this.value = configJSON['amplifier']['g'];
-            preampSlider.value = configJSON['amplifier']['g']
-        } else {
-            const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
-            preampSlider.value = preamp;
-            preampGainBox.value = preamp;
-            configJSON['amplifier']['g'] = preamp;
+        if (!(isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30)) {
+            autoPreampToggle.checked = false;
+            configJSON['amplifier']['g'] = parseFloat(this.value);
             writeConfigToFile();
         }
+        renderConfig();
     }
 }
 
-// Load config values and set event listeners for all equalizer bands
-const sliderContainers = document.getElementsByClassName('eqSliderContainer');
+// Set event listeners for all equalizer bands
 for (let i = 0; i < sliderContainers.length; i++) {
-    const configFValue = configJSON['equalizer']['f'][i];
-    const configQValue = configJSON['equalizer']['q'][i];
-    const configGValue = configJSON['equalizer']['g'][i];
     const slider = document.getElementById('eqSlider' + i);
     const fBox = document.getElementById('fBox' + i);
     const qBox = document.getElementById('qBox' + i);
     const gainBox = document.getElementById('gainBox' + i);
-    fBox.value = configFValue;
-    qBox.value = configQValue;
-    gainBox.value = configGValue;
-    slider.value = configGValue;
+    eqSliders.push(slider);
+    eqFBoxes.push(fBox);
+    eqQBoxes.push(qBox);
+    eqGainBoxes.push(gainBox);
 
     slider.oninput = function() {
-        gainBox.value = this.value;
         configJSON['equalizer']['g'][i] = parseFloat(this.value);
 
         if (autoPreampToggle.checked) {
             const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
-            preampSlider.value = preamp;
-            preampGainBox.value = preamp;
             configJSON['amplifier']['g'] = preamp;
         }
 
         writeConfigToFile();
+        renderConfig();
     }
 
     fBox.onkeydown = function(e) {
         if (e.keyCode == 13) {
             fBox.blur();
-            if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 16000) {
-                this.value = configJSON['equalizer']['f'][i];
-            } else {
-                const entry = parseFloat(this.value);
-                fBox.value = entry;
-                configJSON['equalizer']['f'][i] = entry;
+            if (!(isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 16000)) {
+                configJSON['equalizer']['f'][i] = parseFloat(this.value);
+
                 writeConfigToFile();
             }
+            renderConfig();
         }
     }
 
     qBox.onkeydown = function(e) {
         if (e.keyCode == 13) {
             qBox.blur();
-            if (isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 10) {
-                this.value = configJSON['equalizer']['q'][i];
-            } else {
-                const entry = parseFloat(this.value);
-                qBox.value = entry;
-                configJSON['equalizer']['q'][i] = entry;
+            if (!(isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 10)) {
+                configJSON['equalizer']['q'][i] = parseFloat(this.value);
+
                 writeConfigToFile();
             }
+            renderConfig();
         }
     }
 
     gainBox.onkeydown = function(e) {
         if (e.keyCode == 13) {
             gainBox.blur();
-            if (isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30) {
-                this.value = configJSON['equalizer']['g'][i];
-                slider.value = configJSON['equalizer']['g'][i];
-            } else {
-                const entry = parseFloat(this.value);
-                gainBox.value = entry;
-                slider.value = entry;
-                configJSON['equalizer']['g'][i] = entry;
+            if (!(isNaN(parseFloat(this.value)) || this.value < -30 || this.value > 30)) {
+                configJSON['equalizer']['g'][i] = parseFloat(this.value);
 
                 if (autoPreampToggle.checked) {
                     const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
-                    preampSlider.value = preamp;
-                    preampGainBox.value = preamp;
                     configJSON['amplifier']['g'] = preamp;
                 }
 
                 writeConfigToFile();
             }
+            renderConfig()
         }
     }
 };
 
-// Load config values and set event listeners for reverb unit
-const configDrywetValue = configJSON['reverb']['dw'] * 100;
-const drywetSlider = document.getElementById('drywetSlider');
-const drywetBox = document.getElementById('drywetBox');
-drywetSlider.value = configDrywetValue;
-drywetBox.value = configDrywetValue;
+// Set event listeners for reverb unit
 drywetSlider.oninput = function () {
-    drywetBox.value = this.value;
     configJSON['reverb']['dw'] = parseFloat(this.value) / 100;
     writeConfigToFile();
+    renderConfig();
 };
 
 drywetBox.onkeydown = function(e) {
     if (e.keyCode == 13) {
         drywetBox.blur();
-        if (isNaN(parseFloat(this.value)) || this.value < 0 || this.value > 100) {
-            this.value = configDrywetValue;
-            drywetSlider.value = configDrywetValue;
-        } else {
-            const entry = parseFloat(this.value);
-            drywetBox.value = entry;
-            drywetSlider.value = entry;
-            configJSON['reverb']['dw'] = entry / 100;
+        if (!(isNaN(parseFloat(this.value)) || this.value < 0 || this.value > 100)) {
+            configJSON['reverb']['dw'] = parseFloat(this.value) / 100;
             writeConfigToFile();
         }
+        renderConfig();
     }
 }
 
+// Run
+loadPresets();
+renderConfig();

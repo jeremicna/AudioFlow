@@ -16,7 +16,7 @@ class ConvolutionReverb : public AudioProcessor {
 public:
     std::string path;
 
-    ConvolutionReverb(std::string path, double dryWet);
+    ConvolutionReverb(bool toggle, std::string path, double dryWet);
 
     std::vector<std::complex<float>> fft(const std::vector<float> input, FFTSetup fftSetup);
     std::vector<float> ifft(std::vector<std::complex<float>> input, FFTSetup fftSetup);
