@@ -100,9 +100,9 @@ const loadPresets = function () {
 // Set event listeners for presets
 selectEqualizerPreset.addEventListener('change', function () {
     if (selectEqualizerPreset.value != 'custom') {
-        configJSON['equalizer']['f'] = equalizerPresets[selectEqualizerPreset.value]['f'];
-        configJSON['equalizer']['q'] = equalizerPresets[selectEqualizerPreset.value]['q'];
-        configJSON['equalizer']['g'] = equalizerPresets[selectEqualizerPreset.value]['g'];
+        configJSON['equalizer']['f'] = [...equalizerPresets[selectEqualizerPreset.value]['f']];
+        configJSON['equalizer']['q'] = [...equalizerPresets[selectEqualizerPreset.value]['q']];
+        configJSON['equalizer']['g'] = [...equalizerPresets[selectEqualizerPreset.value]['g']];
         writeConfigToFile();
     }
     renderConfig();
@@ -175,6 +175,8 @@ for (let i = 0; i < sliderContainers.length; i++) {
             configJSON['amplifier']['g'] = preamp;
         }
 
+        selectEqualizerPreset.value = 'custom';
+
         writeConfigToFile();
         renderConfig();
     }
@@ -184,6 +186,8 @@ for (let i = 0; i < sliderContainers.length; i++) {
             fBox.blur();
             if (!(isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 16000)) {
                 configJSON['equalizer']['f'][i] = parseFloat(this.value);
+
+                selectEqualizerPreset.value = 'custom';
 
                 writeConfigToFile();
             }
@@ -196,6 +200,8 @@ for (let i = 0; i < sliderContainers.length; i++) {
             qBox.blur();
             if (!(isNaN(parseFloat(this.value)) || this.value <= 0 || this.value > 10)) {
                 configJSON['equalizer']['q'][i] = parseFloat(this.value);
+
+                selectEqualizerPreset.value = 'custom';
 
                 writeConfigToFile();
             }
@@ -213,6 +219,8 @@ for (let i = 0; i < sliderContainers.length; i++) {
                     const preamp = -Math.max(0, ...configJSON['equalizer']['g']);
                     configJSON['amplifier']['g'] = preamp;
                 }
+
+                selectEqualizerPreset.value = 'custom';
 
                 writeConfigToFile();
             }
