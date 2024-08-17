@@ -1,10 +1,10 @@
 {
   "amplifier": {
-    "toggle": true,
+    "toggle": false,
     "g": 0
   },
   "equalizer": {
-    "toggle": true,
+    "toggle": false,
     "f": [
       32,
       64,

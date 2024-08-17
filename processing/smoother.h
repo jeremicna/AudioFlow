@@ -15,6 +15,7 @@ public:
 
     int getRemaining();
 private:
+    double target;
     double current;
     double increment;
     int remaining;

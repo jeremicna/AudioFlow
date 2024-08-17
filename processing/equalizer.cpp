@@ -17,13 +17,15 @@ Equalizer::Equalizer(bool toggle, std::vector<float> &fVector, std::vector<float
 }
 
 void Equalizer::process(std::vector<float>& input) {
-    std::vector<float> processed(input);
-    for (auto& filter : *filters) {
-        filter.process(processed);
-    }
-    for (size_t i = 0; i < input.size(); ++i) {
-        double dw = mix.currentValue();
-        input[i] = (processed[i] * dw) + (input[i] * (1 - dw));
+    if (mix.currentValueNoChange() > 0 || mix.getRemaining() > 0) {
+        std::vector<float> processed(input);
+        for (auto &filter: *filters) {
+            filter.process(processed);
+        }
+        for (size_t i = 0; i < input.size(); ++i) {
+            double dw = mix.currentValue();
+            input[i] = (processed[i] * dw) + (input[i] * (1 - dw));
+        }
     }
 }
 

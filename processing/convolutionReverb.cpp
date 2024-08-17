@@ -84,50 +84,52 @@ std::vector<float> ConvolutionReverb::ifft(std::vector<std::complex<float>> inpu
 
 
 void ConvolutionReverb::process(std::vector<float>& input) {
-    size_t inputSize = input.size();
-    size_t totalSize = (impulseResponseFFTs.size() + 1) * (chunkSize);
+    if (mix.currentValueNoChange() > 0 || mix.getRemaining() > 0) {
+        size_t inputSize = input.size();
+        size_t totalSize = (impulseResponseFFTs.size() + 1) * (chunkSize);
 
-    input.resize(paddedSize, 0);
-    std::vector<std::complex<float>> inputFFT = fft(input, fftSetups[0]);
+        input.resize(paddedSize, 0);
+        std::vector<std::complex<float>> inputFFT = fft(input, fftSetups[0]);
 
-    std::vector<float> totalInverseFFT(totalSize, 0);
-    std::mutex totalInverseFFTMutex;
-    std::vector<std::thread> threads;
-    for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
-        threads.emplace_back([&, i]() {
-            std::vector<std::complex<float>> convolved(inputFFT.size());
-            for (size_t j = 0; j < inputFFT.size(); ++j) {
-                convolved[j] = inputFFT[j] * impulseResponseFFTs[i][j];
-            }
+        std::vector<float> totalInverseFFT(totalSize, 0);
+        std::mutex totalInverseFFTMutex;
+        std::vector<std::thread> threads;
+        for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
+            threads.emplace_back([&, i]() {
+                std::vector<std::complex<float>> convolved(inputFFT.size());
+                for (size_t j = 0; j < inputFFT.size(); ++j) {
+                    convolved[j] = inputFFT[j] * impulseResponseFFTs[i][j];
+                }
 
-            std::vector<float> inverseFFT = ifft(convolved, fftSetups[i]);
+                std::vector<float> inverseFFT = ifft(convolved, fftSetups[i]);
 
-            totalInverseFFTMutex.lock();
-            for (size_t k = 0; k < inverseFFT.size(); ++k) {
-                totalInverseFFT[k + i * chunkSize] += inverseFFT[k];
-            }
-            totalInverseFFTMutex.unlock();
-        });
+                totalInverseFFTMutex.lock();
+                for (size_t k = 0; k < inverseFFT.size(); ++k) {
+                    totalInverseFFT[k + i * chunkSize] += inverseFFT[k];
+                }
+                totalInverseFFTMutex.unlock();
+            });
+        }
+
+        for (auto &t: threads) {
+            t.join();
+        }
+
+        std::vector<float> output(inputSize);
+        for (size_t i = 0; i < totalInverseFFT.size(); ++i) {
+            overlap[i] += totalInverseFFT[i];
+        }
+        std::copy(overlap.begin(), overlap.begin() + inputSize, output.begin());
+        overlap.erase(overlap.begin(), overlap.begin() + inputSize);
+        overlap.resize(totalSize);
+
+        for (size_t i = 0; i < output.size(); ++i) {
+            double dw = dryWet.currentValue() * mix.currentValue();
+            output[i] = (output[i] * dw) + (input[i] * (1 - dw));
+        }
+
+        input = output;
     }
-
-    for (auto& t : threads) {
-        t.join();
-    }
-
-    std::vector<float> output(inputSize);
-    for (size_t i = 0; i < totalInverseFFT.size(); ++i) {
-        overlap[i] += totalInverseFFT[i];
-    }
-    std::copy(overlap.begin(), overlap.begin() + inputSize, output.begin());
-    overlap.erase(overlap.begin(), overlap.begin() + inputSize);
-    overlap.resize(totalSize);
-
-    for (size_t i = 0; i < output.size(); ++i) {
-        double dw = dryWet.currentValue() * mix.currentValue();
-        output[i] = (output[i] * dw) + (input[i] * (1 - dw));
-    }
-
-    input = output;
 }
 
 double ConvolutionReverb::getDryWet() {
