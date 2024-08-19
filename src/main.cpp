@@ -117,6 +117,24 @@ UInt32 getDefaultOutputDevice() {
     return deviceID;
 }
 
+bool setDefaultSystemOutputDevice(UInt32 deviceID) {
+    OSStatus status;
+    AudioObjectPropertyAddress propertyAddress;
+
+    propertyAddress.mSelector = kAudioHardwarePropertyDefaultSystemOutputDevice;
+    propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
+    propertyAddress.mElement = kAudioObjectPropertyElementMain;
+
+    UInt32 dataSize = sizeof(deviceID);
+    status = AudioObjectSetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, nullptr, dataSize, &deviceID);
+    if (status != noErr) {
+        std::cerr << "Error setting default system output device ID." << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 bool setDefaultOutputDevice(UInt32 deviceID) {
     OSStatus status;
     AudioObjectPropertyAddress propertyAddress;
@@ -203,6 +221,7 @@ void cleanup(int signum) {
     float driverVolume = getAudioDeviceVolume(driverID);
     setAudioDeviceVolume(defaultDeviceID, driverVolume);
     setDefaultOutputDevice(defaultDeviceID);
+    setDefaultSystemOutputDevice(defaultDeviceID);
 
     AudioDeviceStop(driverID, inputIOProcId);
     AudioDeviceStop(defaultDeviceID, outputIOProcID);
@@ -296,6 +315,7 @@ int main() {
     float defaultDeviceVolume = getAudioDeviceVolume(defaultDeviceID);
     setAudioDeviceVolume(driverID, defaultDeviceVolume);
     setDefaultOutputDevice(driverID);
+    setDefaultSystemOutputDevice(driverID);
     setAudioDeviceVolume(defaultDeviceID, 1);
 
     // Set buffer size
