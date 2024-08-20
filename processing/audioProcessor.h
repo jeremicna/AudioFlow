@@ -15,9 +15,9 @@ public:
     void process(std::vector<float>& input);
 
     double getMix();
-    void setMix(double mix);
+    void setMix(double newMix);
 
-    void setToggle(bool toggle);
+    void setToggle(bool newToggle);
     bool getToggle();
 protected:
     Smoother mix;

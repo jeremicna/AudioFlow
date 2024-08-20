@@ -22,7 +22,7 @@ public:
     std::vector<float> ifft(std::vector<std::complex<float>> input, FFTSetup fftSetup);
 
     double getDryWet();
-    void setDryWet(double dryWet);
+    void setDryWet(double newDryWet);
 
     void process(std::vector<float>& input);
 private:

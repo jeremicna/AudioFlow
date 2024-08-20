@@ -12,24 +12,24 @@
 
 class IIRFilter {
 public:
-    IIRFilter(float f, float q, float g, float sampleRate);
+    IIRFilter(float frequency, float quality, float gain, float sampleRate);
 
     void process(std::vector<float>& input);
 
-    void calculatePeakFilter(std::vector<double>& a_coeffs, std::vector<double>& b_coeffs);
+    void calculatePeakFilter();
 
-    float getF();
-    void setF(float gain);
+    float getFrequency();
+    void setFrequency(float newFrequency);
 
-    float getQ();
-    void setQ(float gain);
+    float getQuality();
+    void setQuality(float newQuality);
 
-    float getG();
-    void setG(float gain);
+    float getGain();
+    void setGain(float newGain);
 private:
-    Smoother f;
-    Smoother q;
-    Smoother g;
+    Smoother frequency;
+    Smoother quality;
+    Smoother gain;
     Smoother sampleRate;
     std::vector<double> a_coeffs;
     std::vector<double> b_coeffs;

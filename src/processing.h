@@ -16,16 +16,16 @@
 
 class Processing {
 public:
-    Processing(Config& config, double volume);
-    Processing(Config& config, Processing* old, double volume);
+    Processing(const Config& config, double volume);
+    Processing(const Config& config, const Processing* old, double volume);
 
     void process(std::vector<float>& input);
 private:
     double volume;
     Config config;
-    Amplifier& amplifier;
-    Equalizer& equalizer;
-    ConvolutionReverb& convolutionReverb;
+    std::shared_ptr<Amplifier> amplifier;
+    std::shared_ptr<Equalizer> equalizer;
+    std::shared_ptr<ConvolutionReverb> convolutionReverb;
     std::mutex swapMutex;
 };
 
