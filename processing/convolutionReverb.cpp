@@ -124,8 +124,8 @@ void ConvolutionReverb::process(std::vector<float>& input) {
         overlap.resize(totalSize);
 
         for (size_t i = 0; i < output.size(); ++i) {
-            double dw = dryWet.currentValue() * mix.currentValue();
-            output[i] = (output[i] * dw) + (input[i] * (1 - dw));
+            double scale = dryWet.currentValue() * mix.currentValue();
+            output[i] = (output[i] * scale) + (input[i] * (1 - scale));
         }
 
         input = output;
@@ -136,6 +136,6 @@ double ConvolutionReverb::getDryWet() {
     return dryWet.currentValueNoChange();
 }
 
-void ConvolutionReverb::setDryWet(double dryWet) {
-    this->dryWet = Smoother(this->dryWet.currentValueNoChange(), dryWet, 256);
+void ConvolutionReverb::setDryWet(double newDryWet) {
+    dryWet = Smoother(dryWet.currentValueNoChange(), newDryWet, 256);
 }

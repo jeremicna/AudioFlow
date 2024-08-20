@@ -3,17 +3,19 @@
 //
 
 #include "amplifier.h"
-#include "iostream"
 
-Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1, 1, 256)) {}
+Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1.0, 1.0, 256)) {}
 
 void Amplifier::process(std::vector<float> &input) {
-    if (mix.currentValueNoChange() > 0 || mix.getRemaining() > 0) {
+    double currentMix = mix.currentValueNoChange();
+    double mixRemaining = mix.getRemaining();
+
+    if (currentMix > 0 || mixRemaining > 0) {
         for (auto &sample: input) {
-            double scaleFactor = pow(10, gain.currentValue() / 20);
-            double dw = mix.currentValue();
+            double scaleFactor = std::pow(10, gain.currentValue() / 20);
+            double currentMix = mix.currentValue();
             double scaled = sample * scaleFactor * volumeAdjustment.currentValue();
-            sample = scaled * dw + sample * (1 - dw);
+            sample = scaled * currentMix + sample * (1.0 - currentMix);
         }
     }
 }
@@ -22,14 +24,14 @@ float Amplifier::getGain() {
     return gain.currentValueNoChange();
 }
 
-void Amplifier::setGain(float gain) {
-    this->gain = Smoother(this->gain.currentValueNoChange(), gain, 256);
+void Amplifier::setGain(float newGain) {
+    gain = Smoother(gain.currentValueNoChange(), newGain, 256);
 }
 
 float Amplifier::getVolumeAdjustment() {
     return volumeAdjustment.currentValueNoChange();
 }
 
-void Amplifier::setVolumeAdjustment(float volumeAdjustment) {
-    this->volumeAdjustment = Smoother(volumeAdjustment, 1, 8192);
+void Amplifier::setVolumeAdjustment(float newVolumeAdjustment) {
+    volumeAdjustment = Smoother(newVolumeAdjustment, 1.0, 8192);
 }

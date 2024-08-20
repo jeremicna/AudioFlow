@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <csignal>
+#include <memory>
 #include "processing.h"
 #define driver "HOLLY 2ch"
 
@@ -16,7 +17,7 @@ AudioDeviceIOProcID outputIOProcID;
 std::vector<float> sharedBuffer;
 std::mutex bufferMutex;
 
-Processing* audioProcessor;
+std::unique_ptr<Processing> audioProcessor;
 std::mutex audioProcessorMutex;
 
 Config config;
@@ -235,9 +236,9 @@ void cleanup(int signum) {
 void updateConfig() {
     bool upToDate = config.loadConfig();
     if (!upToDate || audioProcessor == nullptr) {
-        Processing* updated = new Processing(config, audioProcessor, getAudioDeviceVolume(driverID));
+        auto updated = std::make_unique<Processing>(config, audioProcessor.get(), getAudioDeviceVolume(driverID));
         audioProcessorMutex.lock();
-        audioProcessor = updated;
+        audioProcessor = std::move(updated);
         audioProcessorMutex.unlock();
     }
 }
@@ -251,7 +252,7 @@ OSStatus driverIOProc(
         const AudioTimeStamp* inOutputTime,
         void* inClientData
 ) {
-    for (int i = 0; i < inInputData->mNumberBuffers; ++i) {
+    for (size_t i = 0; i < inInputData->mNumberBuffers; ++i) {
         AudioBuffer buffer = inInputData->mBuffers[i];
         float* audioData = (float*)buffer.mData;
         UInt32 numSamples = buffer.mDataByteSize / sizeof(float);
@@ -259,7 +260,7 @@ OSStatus driverIOProc(
         updateConfig();
 
         bufferMutex.lock();
-        for (int j = 0; j < numSamples; ++j) {
+        for (size_t j = 0; j < numSamples; ++j) {
             sharedBuffer.push_back(audioData[j]);
         }
 
@@ -281,13 +282,13 @@ OSStatus defaultDeviceIOProc(
         const AudioTimeStamp* inOutputTime,
         void* inClientData
 ) {
-    for (UInt32 i = 0; i < outOutputData->mNumberBuffers; ++i) {
+    for (size_t i = 0; i < outOutputData->mNumberBuffers; ++i) {
         AudioBuffer outBuffer = outOutputData->mBuffers[i];
         float* outputData = (float*)outBuffer.mData;
         UInt32 numSamples = outBuffer.mDataByteSize / sizeof(float);
 
         bufferMutex.lock();
-        for (int j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
+        for (size_t j = 0; j < numSamples && !sharedBuffer.empty(); ++j) {
             outputData[j] = sharedBuffer.front();
             sharedBuffer.erase(sharedBuffer.begin());
         }
@@ -297,11 +298,7 @@ OSStatus defaultDeviceIOProc(
     return noErr;
 }
 
-// Separate main for win and mac
 int main() {
-    std::signal(SIGINT, cleanup);
-    std::signal(SIGTERM, cleanup);
-
     // Get device IDs
     std::map<UInt32, std::string> ad = getAudioDevices();
     for (auto const& [key, val] : ad) {
@@ -328,7 +325,7 @@ int main() {
     }
 
     config.loadConfig();
-    audioProcessor = new Processing(config, getAudioDeviceVolume(driverID));
+    audioProcessor = std::make_unique<Processing>(config, getAudioDeviceVolume(driverID));
 
     // Create audio device processes
     AudioDeviceCreateIOProcID(driverID, driverIOProc, nullptr, &inputIOProcId);
@@ -338,8 +335,8 @@ int main() {
     AudioDeviceStart(driverID, inputIOProcId);
     AudioDeviceStart(defaultDeviceID, outputIOProcID);
 
-    while (true) {
-        usleep(UINT32_MAX);
-    }
+    std::signal(SIGINT, cleanup);
+    std::signal(SIGTERM, cleanup);
+    while (true);
 }
 

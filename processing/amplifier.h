@@ -16,10 +16,10 @@ public:
     void process(std::vector<float>& input);
 
     float getGain();
-    void setGain(float gain);
+    void setGain(float newGain);
 
     float getVolumeAdjustment();
-    void setVolumeAdjustment(float volumeAdjustment);
+    void setVolumeAdjustment(float newVolumeAdjustment);
 private:
     Smoother gain;
     Smoother volumeAdjustment;
