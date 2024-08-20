@@ -247,6 +247,9 @@ drywetBox.onkeydown = function(e) {
     }
 }
 
-// Run
-loadPresets();
-renderConfig();
+const init = () => {
+    loadPresets();
+    renderConfig();
+};
+
+init();
