@@ -5,14 +5,14 @@ const path = require('path')
 const rootPath = path.resolve(path.dirname(__dirname), '..');
 const backendProcess = spawn(rootPath + '/build/eq_cpp');
 
-process.on('exit', (code) => {
+backendProcess.on('exit', (code) => {
     if (code !== 0) {
         console.error(`Process exited with code: ${code}`);
         app.quit();
     }
 });
 
-process.on('error', (error) => {
+backendProcess.on('error', (error) => {
     console.error(`Error executing file: ${error}`);
     app.quit();
 });
