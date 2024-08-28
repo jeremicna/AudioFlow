@@ -1,13 +1,5 @@
-const path = require('path');
-var fs = require('fs');
-
 // Config
-const rootPath = path.resolve(path.dirname(__dirname), '..');
-const configPath = rootPath + '/config.json';
-const assetsPath = rootPath + '/assets';
-const equalizerPresetsPath = assetsPath + '/eq';
-const reverbPresetsPath = assetsPath + '/ir';
-let configJSON = JSON.parse(fs.readFileSync(configPath));
+let configJSON = window.electronAPI.readConfig();
 
 // DOM Elements
 const autoPreampToggle = document.getElementById('autoPreampToggle');
@@ -33,10 +25,8 @@ let equalizerPresets = {};
 let reverbPresets = {};
 
 const writeConfigToFile = function() {
-    const tempFilePath = path.join(rootPath, 'config.tmp');
-    fs.writeFileSync(tempFilePath, JSON.stringify(configJSON, null, 2));
-    fs.renameSync(tempFilePath, configPath);
-}
+    window.electronAPI.writeConfig(configJSON);
+};
 
 const renderConfig = function () {
     equalizerToggle.checked = configJSON['equalizer']['toggle'];
@@ -55,34 +45,9 @@ const renderConfig = function () {
     drywetBox.value = Math.round(configJSON['reverb']['dw'] * 100);
 }
 
-const getEqualizerPresets = function () {
-    const files = fs.readdirSync(equalizerPresetsPath);
-    const filesDict = {};
-
-    for (const file of files) {
-        const presetJSON = JSON.parse(fs.readFileSync(path.join(equalizerPresetsPath, file)));
-        const name = file.split('.')[0];
-        filesDict[name] = presetJSON;
-    }
-
-    return filesDict;
-}
-
-const getReverbPresets = function () {
-    const files = fs.readdirSync(reverbPresetsPath);
-    const filesDict = {};
-
-    for (const file of files) {
-        const name = file.split('.')[0];
-        filesDict[name] = '../assets/ir/' + file;
-    }
-
-    return filesDict;
-}
-
 const loadPresets = function () {
-    equalizerPresets = getEqualizerPresets();
-    reverbPresets = getReverbPresets();
+    equalizerPresets = window.electronAPI.getEqualizerPresets();
+    reverbPresets = window.electronAPI.getReverbPresets();
     for (const key in equalizerPresets) {
         let node = document.createElement('option');
         node.value = key;

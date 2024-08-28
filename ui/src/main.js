@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const { spawn } = require('child_process');
-const path = require('path');
+const path = require('path')
 
 const rootPath = path.resolve(path.dirname(__dirname), '..');
 const backendProcess = spawn(rootPath + '/build/eq_cpp');
@@ -26,8 +26,10 @@ const createWindow = () => {
         resizable: false,
         fullscreenable: false,
         webPreferences: {
-            contextIsolation: false,
-            nodeIntegration: true,
+            contextIsolation: true,
+            nodeIntegration: false,
+            sandbox: false,
+            preload: path.join(__dirname, 'preload.js'),
         },
     });
 
