@@ -8,4 +8,4 @@ std::string driver = "HOLLY 2ch";
 int bufferSize = 4096;
 int smootherSteps = 256;
 int volumeSmootherSteps = 8192;
-int convolutionChunkSize = 32768;
+int convolutionChunkSize = 16384;

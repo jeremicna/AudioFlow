@@ -21,7 +21,6 @@ std::mutex audioProcessorMutex;
 
 Config config;
 
-
 std::map<UInt32 , std::string> getAudioDevices() {
     AudioObjectPropertyAddress propAddress;
     propAddress.mSelector = kAudioHardwarePropertyDevices;
