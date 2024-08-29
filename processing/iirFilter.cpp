@@ -65,7 +65,7 @@ float IIRFilter::getFrequency() {
 }
 
 void IIRFilter::setFrequency(float newFrequency) {
-    frequency = Smoother(frequency.currentValueNoChange(), newFrequency, 256);
+    frequency = Smoother(frequency.currentValueNoChange(), newFrequency, smootherSteps);
 }
 
 float IIRFilter::getQuality() {
@@ -73,7 +73,7 @@ float IIRFilter::getQuality() {
 }
 
 void IIRFilter::setQuality(float newQuality) {
-    quality = Smoother(quality.currentValueNoChange(), newQuality, 256);
+    quality = Smoother(quality.currentValueNoChange(), newQuality, smootherSteps);
 }
 
 float IIRFilter::getGain() {
@@ -81,5 +81,5 @@ float IIRFilter::getGain() {
 }
 
 void IIRFilter::setGain(float newGain) {
-    gain = Smoother(gain.currentValueNoChange(), newGain, 256);
+    gain = Smoother(gain.currentValueNoChange(), newGain, smootherSteps);
 }

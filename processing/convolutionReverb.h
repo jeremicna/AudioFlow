@@ -7,10 +7,12 @@
 
 #include <map>
 #include <thread>
-#include <Accelerate/Accelerate.h>
-#include "../fileutils/readIRFile.h"
 #include "smoother.h"
 #include "audioProcessor.h"
+#include <Accelerate/Accelerate.h>
+#include "../fileutils/readIRFile.h"
+#include "../fileutils/globals.h"
+
 
 class ConvolutionReverb : public AudioProcessor {
 public:

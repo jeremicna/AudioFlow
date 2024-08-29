@@ -6,7 +6,7 @@
 
 
 ConvolutionReverb::ConvolutionReverb(bool toggle, std::string path, double dryWet) : AudioProcessor(toggle), path(path), dryWet(Smoother(dryWet, dryWet, 0)) {
-    chunkSize = 32768;
+    chunkSize = convolutionChunkSize;
     paddedSize = chunkSize * 2;
     impulseResponse = readIRFile(path);
     impulseResponseFFTs.resize(ceil(static_cast<float>(impulseResponse.size() / chunkSize)));
@@ -137,5 +137,5 @@ double ConvolutionReverb::getDryWet() {
 }
 
 void ConvolutionReverb::setDryWet(double newDryWet) {
-    dryWet = Smoother(dryWet.currentValueNoChange(), newDryWet, 256);
+    dryWet = Smoother(dryWet.currentValueNoChange(), newDryWet, smootherSteps);
 }

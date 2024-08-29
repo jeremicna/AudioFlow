@@ -5,8 +5,7 @@
 #include <csignal>
 #include <memory>
 #include "processing.h"
-#define driver "HOLLY 2ch"
-
+#include "../fileutils/globals.h"
 
 UInt32 driverID;
 UInt32 defaultDeviceID;
@@ -264,7 +263,7 @@ OSStatus driverIOProc(
             sharedBuffer.push_back(audioData[j]);
         }
 
-        if (sharedBuffer.size() == 8192) {
+        if (sharedBuffer.size() == 2 * bufferSize) {
             audioProcessor->process(sharedBuffer);
         }
         bufferMutex.unlock();
@@ -316,7 +315,7 @@ int main() {
     setAudioDeviceVolume(defaultDeviceID, 1);
 
     // Set buffer size
-    UInt32 bufferSizeInFrames = 4096; // Choose your desired buffer size
+    UInt32 bufferSizeInFrames = bufferSize; // Choose your desired buffer size
     if (!setAudioDeviceBufferSize(driverID, bufferSizeInFrames)) {
         std::cerr << "Failed to set buffer size for driver device." << std::endl;
     }

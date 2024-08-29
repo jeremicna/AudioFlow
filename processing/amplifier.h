@@ -8,6 +8,7 @@
 #include <map>
 #include "smoother.h"
 #include "audioProcessor.h"
+#include "../fileutils/globals.h"
 
 class Amplifier: public AudioProcessor {
 public:

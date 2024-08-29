@@ -4,7 +4,7 @@
 
 #include "amplifier.h"
 
-Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1.0, 1.0, 256)) {}
+Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1.0, 1.0, smootherSteps)) {}
 
 void Amplifier::process(std::vector<float> &input) {
     double currentMix = mix.currentValueNoChange();
@@ -25,7 +25,7 @@ float Amplifier::getGain() {
 }
 
 void Amplifier::setGain(float newGain) {
-    gain = Smoother(gain.currentValueNoChange(), newGain, 256);
+    gain = Smoother(gain.currentValueNoChange(), newGain, smootherSteps);
 }
 
 float Amplifier::getVolumeAdjustment() {
@@ -33,5 +33,5 @@ float Amplifier::getVolumeAdjustment() {
 }
 
 void Amplifier::setVolumeAdjustment(float newVolumeAdjustment) {
-    volumeAdjustment = Smoother(newVolumeAdjustment, 1.0, 8192);
+    volumeAdjustment = Smoother(newVolumeAdjustment, 1.0, volumeSmootherSteps);
 }

@@ -27,6 +27,6 @@ double AudioProcessor::getMix() {
 }
 
 void AudioProcessor::setMix(double newMix) {
-    mix = Smoother(this->mix.currentValueNoChange(), newMix, 256);
+    mix = Smoother(this->mix.currentValueNoChange(), newMix, smootherSteps);
 }
 

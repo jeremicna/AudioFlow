@@ -7,6 +7,8 @@
 
 #include <map>
 #include "smoother.h"
+#include "../fileutils/globals.h"
+
 
 class AudioProcessor {
 public:
