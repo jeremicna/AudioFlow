@@ -1,10 +1,10 @@
 {
   "amplifier": {
-    "toggle": false,
-    "g": 0
+    "toggle": true,
+    "g": -20
   },
   "equalizer": {
-    "toggle": false,
+    "toggle": true,
     "f": [
       32,
       64,
@@ -30,21 +30,21 @@
       1.41
     ],
     "g": [
+      20,
+      14,
+      9,
+      4,
       0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      -4,
+      -9,
+      -6,
+      -2,
+      3
     ]
   },
   "reverb": {
-    "toggle": false,
-    "dw": 0.5,
-    "ir": "../assets/ir/irc.wav"
+    "toggle": true,
+    "dw": 0.25,
+    "ir": "../assets/ir/1 Halls 05 Medium & Near, 48K.wav"
   }
 }
