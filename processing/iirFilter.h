@@ -9,6 +9,7 @@
 #include <vector>
 #include <stdexcept>
 #include "smoother.h"
+#include "../fileutils/globals.h"
 
 class IIRFilter {
 public:

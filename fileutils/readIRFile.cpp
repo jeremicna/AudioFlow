@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstring>
 #include "readIRFile.h"
+#include "../fileutils/globals.h"
 
 struct WAVHeader {
     char chunkID[4];
@@ -57,7 +58,7 @@ std::vector<float> readIRFile(const std::string &path) {
                 sampleRate = *reinterpret_cast<const uint32_t*>(chunk.data.data() + 4);
                 bitsPerSample = *reinterpret_cast<const uint16_t*>(chunk.data.data() + 14);
 
-                if (numChannels != 2 || sampleRate != 48000 || bitsPerSample != 32) {
+                if (numChannels != 2 || sampleRate != 48000 || bitsPerSample != 16) {
                     std::cerr << "Only 32-bit 48kHz stereo wav files are supported for impulse responses." << std::endl;
                 }
             } else {
@@ -66,10 +67,14 @@ std::vector<float> readIRFile(const std::string &path) {
         }
 
         if (std::string(chunk.chunkID, 4) == "data") {
-            if (bitsPerSample == 32) {
+            if (bitsPerSample == 16) {
                 for (size_t i = 0; i < chunk.data.size(); i += 4) {
-                    float sample = *reinterpret_cast<const float*>(&chunk.data[i]);
-                    audioData.push_back(sample);
+                    int16_t sample = *reinterpret_cast<const int16_t*>(&chunk.data[i]);
+                    float normalizedSample = sample / 32768.0f / 2;
+                    audioData.push_back(normalizedSample);
+                }
+                if (audioData.size() < convolutionChunkSize) {
+                    audioData.resize(convolutionChunkSize, 0.0f);
                 }
             } else {
                 std::cerr << "Unsupported bits per sample: " << bitsPerSample << std::endl;

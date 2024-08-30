@@ -4,6 +4,7 @@
 
 #include "processing.h"
 #include <thread>
+#include <mutex>
 
 
 Processing::Processing(const Config& config, double volume) :
@@ -52,11 +53,12 @@ Processing::Processing(const Config& config, const Processing* old, double volum
     if (convolutionReverb->getDryWet() != config.reverbDryWet) {
         convolutionReverb->setDryWet(config.reverbDryWet);
     } else if (convolutionReverb->path != config.irFilePath) {
-        std::thread ([&]() {
+        std::thread ([this, config]() {
+            convolutionReverb->setToggle(false);
             auto newConvolutionReverb = std::make_shared<ConvolutionReverb>(config.reverbToggle, config.irFilePath, config.reverbDryWet);
-            swapMutex.lock();
+
+            std::lock_guard<std::mutex> lock(swapMutex);
             convolutionReverb = std::move(newConvolutionReverb);
-            swapMutex.unlock();
         }).detach();
     }
 }
@@ -64,5 +66,7 @@ Processing::Processing(const Config& config, const Processing* old, double volum
 void Processing::process(std::vector<float>& input) {
     amplifier->process(input);
     equalizer->process(input);
+
+    std::lock_guard<std::mutex> lock(swapMutex);
     convolutionReverb->process(input);
 }

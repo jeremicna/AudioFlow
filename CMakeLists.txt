@@ -19,6 +19,7 @@ set(SOURCES
         processing/audioProcessor.cpp
         fileutils/readIRFile.cpp
         fileutils/config.cpp
+        fileutils/globals.cpp
         )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build)

@@ -20,7 +20,7 @@ ConvolutionReverb::ConvolutionReverb(bool toggle, std::string path, double dryWe
     for (size_t i = 0; i < impulseResponseFFTs.size(); ++i) {
         std::vector<float> chunked = std::vector<float>(impulseResponse.begin() + i * chunkSize, impulseResponse.begin() + (i + 1) * chunkSize);
         chunked.resize(paddedSize, 0);
-        impulseResponseFFTs[i] = fft(chunked, fftSetups[i]);
+        impulseResponseFFTs[i] = fft(chunked, vDSP_create_fftsetup(log2f(paddedSize), FFT_RADIX2));
     }
 
     overlap.resize(impulseResponseFFTs.size() * chunkSize, 0);
