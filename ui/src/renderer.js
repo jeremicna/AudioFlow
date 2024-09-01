@@ -43,6 +43,8 @@ const renderConfig = function () {
 
     drywetSlider.value = Math.round(configJSON['reverb']['dw'] * 100);
     drywetBox.value = Math.round(configJSON['reverb']['dw'] * 100);
+
+    selectReverbPreset.value = configJSON['reverb']['ir'].split('/').pop().split('.')[0]
 }
 
 const loadPresets = function () {
