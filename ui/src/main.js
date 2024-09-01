@@ -3,7 +3,7 @@ const { spawn } = require('child_process');
 const path = require('path')
 
 const rootPath = path.resolve(path.dirname(__dirname), '..');
-const backendProcess = spawn(rootPath + '/build/eq_cpp');
+const backendProcess = spawn(rootPath + '/build/AudioFlow');
 
 backendProcess.on('exit', (code) => {
     if (code !== 0) {

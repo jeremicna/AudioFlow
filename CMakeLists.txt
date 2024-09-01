@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(eq_cpp)
+project(AudioFlow)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -24,6 +24,6 @@ set(SOURCES
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../build)
 
-add_executable(eq_cpp ${SOURCES})
+add_executable(AudioFlow ${SOURCES})
 
-target_link_libraries(eq_cpp ${CoreAudio} ${CoreFoundation} ${AudioToolbox} ${Accelerate})
+target_link_libraries(AudioFlow ${CoreAudio} ${CoreFoundation} ${AudioToolbox} ${Accelerate})
