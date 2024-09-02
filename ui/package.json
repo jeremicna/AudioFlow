@@ -1,7 +1,7 @@
 {
-  "name": "eq-frontend",
+  "name": "AudioFlow",
   "version": "1.0.0",
-  "description": "Frontend for equalizer",
+  "description": "AudioFlow",
   "main": "src/main.js",
   "scripts": {
     "start": "electron ."
@@ -9,6 +9,7 @@
   "author": "jeremicna",
   "license": "ISC",
   "devDependencies": {
+    "@electron/packager": "^18.3.4",
     "electron": "^31.3.1"
   }
 }

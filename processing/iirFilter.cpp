@@ -11,7 +11,7 @@ IIRFilter::IIRFilter(float f, float q, float g, float sampleRate)
     state = std::vector<double>(a_coeffs.size(), 0.0);
 }
 
-void IIRFilter::process(std::vector<float>& input) {
+void IIRFilter::process(std::vector<double>& input) {
     for (size_t n = 0; n < input.size(); ++n) {
         if (frequency.getRemaining() > 0 || quality.getRemaining() > 0 || gain.getRemaining() > 0) {
             calculatePeakFilter();

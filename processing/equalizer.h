@@ -13,7 +13,7 @@ class Equalizer: public AudioProcessor {
 public:
     Equalizer(bool toggle, const std::vector<float>& fVector, const std::vector<float>& qVector, const std::vector<float>& gVector, float sampleRate);
 
-    void process(std::vector<float>& input);
+    void process(std::vector<double>& input);
 
     std::vector<IIRFilter>& getFilters();
 private:

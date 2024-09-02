@@ -15,7 +15,7 @@ class IIRFilter {
 public:
     IIRFilter(float frequency, float quality, float gain, float sampleRate);
 
-    void process(std::vector<float>& input);
+    void process(std::vector<double>& input);
 
     void calculatePeakFilter();
 

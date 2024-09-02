@@ -4,6 +4,8 @@
 
 #include "equalizer.h"
 #include "iostream"
+#include <algorithm>
+
 
 Equalizer::Equalizer(bool toggle, const std::vector<float> &fVector, const std::vector<float> &qVector, const std::vector<float> &gVector, float sampleRate) : AudioProcessor(toggle) {
     if (fVector.size() != qVector.size() || fVector.size() != gVector.size()) {
@@ -14,14 +16,15 @@ Equalizer::Equalizer(bool toggle, const std::vector<float> &fVector, const std::
     for (size_t i = 0; i < fVector.size(); i++) {
         filters->emplace_back(IIRFilter(fVector[i], qVector[i], gVector[i], sampleRate));
     }
+    std::reverse(filters->begin(), filters->end());
 }
 
-void Equalizer::process(std::vector<float>& input) {
+void Equalizer::process(std::vector<double>& input) {
     double currentMix = mix.currentValueNoChange();
     double mixRemaining = mix.getRemaining();
 
     if (currentMix > 0 || mixRemaining > 0) {
-        std::vector<float> processed(input);
+        std::vector<double> processed(input);
         for (auto &filter: *filters) {
             filter.process(processed);
         }

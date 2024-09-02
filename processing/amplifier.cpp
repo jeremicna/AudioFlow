@@ -6,7 +6,7 @@
 
 Amplifier::Amplifier(bool toggle, float gain) : AudioProcessor(toggle), gain(Smoother(gain, gain, 0)), volumeAdjustment(Smoother(1.0, 1.0, smootherSteps)) {}
 
-void Amplifier::process(std::vector<float> &input) {
+void Amplifier::process(std::vector<double> &input) {
     double currentMix = mix.currentValueNoChange();
     double mixRemaining = mix.getRemaining();
 

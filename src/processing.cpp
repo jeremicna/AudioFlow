@@ -64,8 +64,20 @@ Processing::Processing(const Config& config, const Processing* old, double volum
 }
 
 void Processing::process(std::vector<float>& input) {
-    amplifier->process(input);
-    equalizer->process(input);
+    std::vector<double> doubleInput;
+    for (float value : input) {
+        doubleInput.push_back(static_cast<float>(value));
+    }
+
+    amplifier->process(doubleInput);
+    equalizer->process(doubleInput);
+
+    std::vector<float> processed;
+    for (double value : doubleInput) {
+        processed.push_back(static_cast<float>(value));
+    }
+
+    input = processed;
 
     std::lock_guard<std::mutex> lock(swapMutex);
     convolutionReverb->process(input);

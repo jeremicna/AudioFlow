@@ -14,7 +14,7 @@ class Amplifier: public AudioProcessor {
 public:
     Amplifier(bool toggle, float gain);
 
-    void process(std::vector<float>& input);
+    void process(std::vector<double>& input);
 
     float getGain();
     void setGain(float newGain);
