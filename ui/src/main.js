@@ -3,7 +3,9 @@ const { spawn } = require('child_process');
 const path = require('path')
 
 const rootPath = path.resolve(path.dirname(__dirname), '..');
-const backendProcess = spawn(path.join(rootPath, '/build/AudioFlow'));
+const backendProcess = spawn(path.join(rootPath, '/build/AudioFlow'), [], {
+    cwd: path.join(rootPath, '/build')
+});
 
 backendProcess.on('exit', (code) => {
     if (code !== 0) {
