@@ -5,6 +5,7 @@
 #include "processing.h"
 #include <thread>
 #include <mutex>
+#include "iostream"
 
 
 Processing::Processing(const Config& config, double volume) :
@@ -64,19 +65,12 @@ Processing::Processing(const Config& config, const Processing* old, double volum
 }
 
 void Processing::process(std::vector<float>& input) {
-    std::vector<double> doubleInput;
-    for (float value : input) {
-        doubleInput.push_back(static_cast<float>(value));
-    }
+    std::vector<double> doubleInput(input.begin(), input.end());
 
     amplifier->process(doubleInput);
     equalizer->process(doubleInput);
 
-    std::vector<float> processed;
-    for (double value : doubleInput) {
-        processed.push_back(static_cast<float>(value));
-    }
-
+    std::vector<float> processed(doubleInput.begin(), doubleInput.end());
     input = processed;
 
     std::lock_guard<std::mutex> lock(swapMutex);

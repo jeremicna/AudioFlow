@@ -324,6 +324,7 @@ int main() {
 
     config.loadConfig();
     audioProcessor = std::make_unique<Processing>(config, getAudioDeviceVolume(driverID));
+    audioProcessor = std::make_unique<Processing>(config, audioProcessor.get(), getAudioDeviceVolume(driverID));
 
     // Create audio device processes
     AudioDeviceCreateIOProcID(driverID, driverIOProc, nullptr, &inputIOProcId);

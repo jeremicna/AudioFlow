@@ -70,7 +70,7 @@ std::vector<float> readIRFile(const std::string &path) {
             if (bitsPerSample == 16) {
                 for (size_t i = 0; i < chunk.data.size(); i += 4) {
                     int16_t sample = *reinterpret_cast<const int16_t*>(&chunk.data[i]);
-                    float normalizedSample = sample / 32768.0f / 4;
+                    float normalizedSample = sample / 32768.0f / 8;
                     audioData.push_back(normalizedSample);
                 }
                 if (audioData.size() < convolutionChunkSize) {
