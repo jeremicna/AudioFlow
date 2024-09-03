@@ -17,9 +17,9 @@ Processing::Processing(const Config& config, double volume) :
 
 Processing::Processing(const Config& config, const Processing* old, double volume) :
         config(config),
-        amplifier(std::make_shared<Amplifier>(*old->amplifier)),
-        equalizer(std::make_shared<Equalizer>(*old->equalizer)),
-        convolutionReverb(std::make_shared<ConvolutionReverb>(*old->convolutionReverb)),
+        amplifier(std::move(old->amplifier)),
+        equalizer(std::move(old->equalizer)),
+        convolutionReverb(std::move(old->convolutionReverb)),
         volume(volume)
 {
     if (old->volume != volume) {
