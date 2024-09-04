@@ -4,7 +4,7 @@
 
 #include "globals.h"
 
-std::string driver = "HOLLY 2ch";
+std::string driver = "AudioFlow 2ch";
 int bufferSize = 4096;
 int smootherSteps = 256;
 int volumeSmootherSteps = 8192;
