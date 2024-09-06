@@ -6,8 +6,8 @@ AudioFlow is a MacOS system audio equalizer designed to be simple, lightweight, 
 - [Uninstallation Instructions](#uninstallation-instructions)
 - [Usage](#usage)
 - [Features](#features)
-- [User Interface](#user-interface)
 - [Demo](#demo)
+- [User Interface](#user-interface)
 - [Contributing](#contributing)
 - [Credits](#credits)
 
@@ -44,11 +44,11 @@ To use AudioFlow, simply open the application and AudioFlow will automatically s
   * 135 impulse responses representing different audiospatial environments to choose from
   * Adjustable mixing (dry/wet)
  
-## User Interface
-![Image of UI](assets/demo/ui.png)
-
 ## Demo
-![Demo](https://github.com/user-attachments/assets/592e131e-b569-42e9-9570-24331cd2271c)
+https://github.com/user-attachments/assets/41a625e8-e656-4a86-a6b3-8140cdd7d376
+
+## User Interface
+<img src="assets/demo/ui.png" width="320">
 
 ## Contributing
 All contributions are welcome. Whether you're fixing a bug, adding a new feature, or have an issue, feel free to open a pull request/issue/etc.
