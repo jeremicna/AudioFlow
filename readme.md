@@ -30,7 +30,7 @@ Note: This script may prompt password input as it moves the virtual audio device
    ```sudo killall -9 coreaudiod```
 
 ## Usage
-To use AudioFlow, simply open the application and AudioFlow will automatically switch to the ```AudioFlow 2ch``` audio device and route the processed audio to the last selected audio device.
+To use AudioFlow, simply open it from your applications and AudioFlow will automatically switch to the ```AudioFlow 2ch``` audio device and route the processed audio to the last selected audio device.
 
 ## Features
 * Equalizer
@@ -43,6 +43,12 @@ To use AudioFlow, simply open the application and AudioFlow will automatically s
   * Convolution based
   * 135 impulse responses representing different audiospatial environments to choose from
   * Adjustable mixing (dry/wet)
+ 
+## User Interface
+![Image of UI](assets/demo/ui.png)
+
+## Demo
+![Demo](https://github.com/user-attachments/assets/592e131e-b569-42e9-9570-24331cd2271c)
 
 ## Contributing
 All contributions are welcome. Whether you're fixing a bug, adding a new feature, or have an issue, feel free to open a pull request/issue/etc.
