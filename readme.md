@@ -16,7 +16,7 @@ AudioFlow is a MacOS system audio equalizer designed to be simple, lightweight, 
 ```cd {PATH_TO_RELEASE}/AudioFlow.app```
 3. Execute the installer:\
 ```sh Contents/Resources/scripts/installer.sh```\
-Note: This script may prompt password input as it moves the virtual audio device driver from ```assets/driver``` to ```/Library/Audio/Plug-Ins/HAL``` which requires administrator privileges. Alternatively, it is possible to manually move it. 
+Note: This script may prompt password input as it moves the virtual audio device driver from ```assets/driver``` to ```/Library/Audio/Plug-Ins/HAL``` which requires administrator privileges. Alternatively, it is possible to manually move it. This script also temporarily contains a command which disables the apple quarantine the prevents the app from being opened due to the fact the builds are not currently notarized. 
 4. Restart CoreAudio:\
 ```sudo killall -9 coreaudiod```
 
