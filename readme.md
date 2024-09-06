@@ -1,4 +1,4 @@
-# AudioFlow
+# AudioFlow <img width="48" alt="AudioFlow" src="https://github.com/user-attachments/assets/58290cd1-bdf9-4b60-a55e-c2554926db5f">
 AudioFlow is a MacOS system audio equalizer designed to be simple, lightweight, and robust. AudioFlow currently features a 10 band equalizer and a convolution reverb unit. AudioFlow is built in C++ and is powered by Apple's CoreAudio and Accelerate frameworks.
 
 ## Table of Contents
@@ -12,7 +12,7 @@ AudioFlow is a MacOS system audio equalizer designed to be simple, lightweight, 
 - [Credits](#credits)
 
 ## Installation Instructions
-1. Download the most recent release from 
+1. Download the most recent release from https://github.com/jeremicna/AudioFlow/releases
 2. Navigate to:\
 ```cd {PATH_TO_RELEASE}/AudioFlow.app```
 3. Execute the installer:\
