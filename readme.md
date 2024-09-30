@@ -9,7 +9,6 @@ https://github.com/user-attachments/assets/41a625e8-e656-4a86-a6b3-8140cdd7d376
 - [Uninstallation Instructions](#uninstallation-instructions)
 - [Usage](#usage)
 - [Features](#features)
-- [Demo](#demo)
 - [User Interface](#user-interface)
 - [Contributing](#contributing)
 - [Credits](#credits)
